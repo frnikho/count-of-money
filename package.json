@@ -5,7 +5,11 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "dev:api": "nx serve api",
+    "dev:web": "nx serve web",
+    "prod:api": "nx build api && node dist/apps/api/main.js",
+    "prod:web": "nx build web && serve -s dist/apps/web"
   },
   "private": true,
   "dependencies": {
