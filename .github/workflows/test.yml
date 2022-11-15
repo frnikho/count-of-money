@@ -1,4 +1,4 @@
-name: Build
+name: Test
 on:
   push:
     branches:
@@ -26,7 +26,12 @@ jobs:
           version: 7.14.0
       - name: Install dependencies
         run: "pnpm i"
-      - name: Build Api
-        run: "pnpm run build:api"
-      - name: Build Web
-        run: "pnpm run build:web"
+      - name: Test Api
+        run: "pnpm run test:api"
+      - name: Test Web
+        run: "pnpm run test:web"
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
