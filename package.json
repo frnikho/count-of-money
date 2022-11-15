@@ -10,6 +10,10 @@
     "dev:web": "nx serve web",
     "prod:api": "nx build api && node dist/apps/api/main.js",
     "prod:web": "nx build web && serve -s dist/apps/web -p 4000"
+    "build:api": "nx build api",
+    "build:web": "nx build web",
+    "test:api": "nx test api",
+    "test:web": "nx test web"
   },
   "private": true,
   "dependencies": {

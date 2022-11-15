@@ -1,0 +1,32 @@
+name: Lint
+on:
+  push:
+    branches:
+      - master
+      - feature/ci
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  sonarcloud:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.17.1]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7.14.0
+      - name: Install dependencies
+        run: "pnpm i"
+      - name: Lint api
+        run: "pnpm nx lint api"
+      - name: Lint web
+        run: "pnpm nx lint web"
