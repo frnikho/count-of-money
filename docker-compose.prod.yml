@@ -1,35 +1,5 @@
 version: "3.4"
 services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    labels:
-      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
-    restart: always
-    network_mode: bridge
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - proxy/conf:/etc/nginx/conf.d
-      - proxy/certs:/etc/nginx/certs/:ro
-      - proxy/vhost:/etc/nginx/vhost.d/
-      - proxy/html:/usr/share/nginx/html/
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-
-  acme-companion:
-    image: nginxproxy/acme-companion
-    container_name: acme-companion
-    restart: unless-stopped
-    network_mode: bridge
-    volumes:
-      - proxy/html:/usr/share/nginx/html/
-      - proxy/vhost:/etc/nginx/vhost.d/
-      - proxy/certs:/etc/nginx/certs/:rw
-      - proxy/acme:/etc/acme.sh
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - DEFAULT_EMAIL=admin@hahn-webdesign.de
-      - NGINX_PROXY_CONTAINER=nginx-proxy
   web:
     build:
       context: ./
@@ -71,7 +41,9 @@ services:
     environment:
       VIRTUAL_HOST: ${VIRTUAL_HOST_ADMINER}
       LETSENCRYPT_HOST: ${VIRTUAL_HOST_ADMINER}
-
 volumes:
-  proxy:
   postgres:
+networks:
+  default:
+    external:
+      name: nginx-proxy
