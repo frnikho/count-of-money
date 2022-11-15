@@ -1,4 +1,4 @@
-name: Build
+name: Lint
 on:
   push:
     branches:
@@ -26,7 +26,7 @@ jobs:
           version: 7.14.0
       - name: Install dependencies
         run: "pnpm i"
-      - name: Build Api
-        run: "pnpm run build:api"
-      - name: Build Web
-        run: "pnpm run build:web"
+      - name: Lint api
+        run: "pnpm nx lint api"
+      - name: Lint web
+        run: "pnpm nx lint web"
