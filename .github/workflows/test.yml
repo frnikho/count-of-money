@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - feature/ci
+      - develop
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
