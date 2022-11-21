@@ -90,10 +90,26 @@ Le docker compose de production comprends également 2 autres services:
 
 Ces deux services sont connectés ensemble afin de fournir un reverse-proxy dynamique en https pour la production.
 
+## Installation
+
+### Prérequis
+
+Avant de lancer vos conteneurs, un fichier `.env` doit être créé à la racine du repo. Vous pouvez dupliquez le `.env.example` afin d'avoir les variables d'environnements requis par l'application.
+
+### Commandes
 
 Pour lancer le docker-compose de développement:
 ```shell
-$ docker compose up # A la racine du repository
+# A la racine du repository
+$ docker-compose up  # Docker compose v1
+$ docker compose up  # Docker compose v2
+```
+
+Pour stopper les conteneurs en cours d'utilisations:
+```shell
+# A la racine du repository
+$ docker-compose down  # Docker compose v1
+$ docker compose down  # Docker compose v2
 ```
 
 Pour lancer le docker-compose de production:
