@@ -49,6 +49,8 @@ services:
     environment:
       VIRTUAL_HOST: ${VIRTUAL_HOST_API}
       LETSENCRYPT_HOST: ${VIRTUAL_HOST_API}
+    depends_on:
+      - db
   db:
     image: postgres
     restart: always
