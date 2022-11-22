@@ -12,16 +12,55 @@ datasource db {
 }
 
 model User {
-  id Int @default(autoincrement()) @id
-  email String @unique
-  firstname String
-  lastname String
-  password String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id             String         @id @unique @default(uuid())
+  email          String         @unique
+  firstname      String
+  lastname       String
+  password       String
+  createdAt      DateTime
+  updatedAt      DateTime
   createdSources Source[]
-  role Role @default(User)
-  authType AuthType @default(Native)
+  role           Role
+  authType       AuthType
+  preference     UserPreference?
+}
+
+model Source {
+  id          String   @id @unique @default(uuid())
+  name        String
+  link        String
+  enable      Boolean
+  createdAt   DateTime
+  updatedAt   DateTime
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdById String
+}
+
+model Crypto {
+  id String @id @unique @default(uuid())
+  apiId String @unique
+  symbol String
+  name String
+  createdAt   DateTime
+  updatedAt   DateTime
+  user CryptoList[]
+}
+
+model UserPreference {
+  id   String @id @unique @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String @unique
+  coins CryptoList[]
+}
+
+model CryptoList {
+  userPreference UserPreference @relation(fields: [userPreferenceId], references: [id])
+  userPreferenceId String
+  crypto Crypto @relation(fields: [cryptoId], references: [id])
+  cryptoId String
+  createdAt DateTime @default(now())
+
+  @@id([userPreferenceId, cryptoId])
 }
 
 enum AuthType {
@@ -32,15 +71,4 @@ enum AuthType {
 enum Role {
   User
   Admin
-}
-
-model Source {
-  id Int @default(autoincrement()) @id
-  name String
-  link String
-  enable Boolean @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  createdBy User @relation(fields: [createdById], references: [id])
-  createdById Int
 }
