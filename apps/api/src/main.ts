@@ -4,7 +4,7 @@ import { AppModule } from './app/app.module';
 import {PrismaService} from "./app/prisma/prisma.service";
 import {NestExpressApplication} from "@nestjs/platform-express";
 import helmet from "helmet";
-import * as csurf from 'csurf';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 class Server {
 
@@ -13,6 +13,7 @@ class Server {
   public async start() {
     this.app = await NestFactory.create<NestExpressApplication>(AppModule);
     await this.config();
+    this.configureOpenApi();
     await this.app.listen(parseInt(process.env.PORT) || 4200);
   }
 
@@ -23,7 +24,16 @@ class Server {
       origin: process.env.CORS_URL
     });
     this.app.use(helmet());
-    this.app.use(csurf())
+  }
+
+  public configureOpenApi() {
+    const config = new DocumentBuilder()
+      .setTitle('Count the Money')
+      .setDescription('Count the Money - a Epitech Projet')
+      .setVersion('1.0')
+      .build();
+    const document = SwaggerModule.createDocument(this.app, config);
+    SwaggerModule.setup('api', this.app, document);
   }
 
 }
