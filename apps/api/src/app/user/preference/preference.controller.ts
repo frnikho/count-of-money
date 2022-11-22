@@ -7,12 +7,12 @@ export class PreferenceController {
 
   @Get()
   public getMyPreference() {
-
+    //TODO
   }
 
   @Patch()
   public updateMyPreference() {
-
+    //TODO
   }
 
 }
