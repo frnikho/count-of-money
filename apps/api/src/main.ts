@@ -1,25 +1,41 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
-import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 import {PrismaService} from "./app/prisma/prisma.service";
+import {NestExpressApplication} from "@nestjs/platform-express";
+import helmet from "helmet";
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-  const prismaService = app.get(PrismaService);
-  await prismaService.enableShutdownHooks(app)
-  const port = 4200;
-  await app.listen(port);
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
-  );
+class Server {
+
+  private app: NestExpressApplication;
+
+  public async start() {
+    this.app = await NestFactory.create<NestExpressApplication>(AppModule);
+    await this.config();
+    this.configureOpenApi();
+    await this.app.listen(parseInt(process.env.PORT) || 4200);
+  }
+
+  public async config() {
+    const prismaService = this.app.get(PrismaService);
+    await prismaService.enableShutdownHooks(this.app);
+    this.app.enableCors({
+      origin: process.env.CORS_URL
+    });
+    this.app.use(helmet());
+  }
+
+  public configureOpenApi() {
+    const config = new DocumentBuilder()
+      .setTitle('Count the Money')
+      .setDescription('Count the Money - a Epitech Projet')
+      .setVersion('1.0')
+      .build();
+    const document = SwaggerModule.createDocument(this.app, config);
+    SwaggerModule.setup('api', this.app, document);
+  }
+
 }
 
-bootstrap();
+new Server().start();
