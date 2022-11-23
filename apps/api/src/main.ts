@@ -5,6 +5,7 @@ import {PrismaService} from "./app/prisma/prisma.service";
 import {NestExpressApplication} from "@nestjs/platform-express";
 import helmet from "helmet";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import {ValidationPipe} from "@nestjs/common";
 
 class Server {
 
@@ -14,7 +15,7 @@ class Server {
     this.app = await NestFactory.create<NestExpressApplication>(AppModule);
     await this.config();
     this.configureOpenApi();
-    await this.app.listen(parseInt(process.env.PORT) || 4200);
+    await this.app.listen(parseInt(process.env.PORT ?? "4200"));
   }
 
   public async config() {
@@ -24,6 +25,7 @@ class Server {
       origin: process.env.CORS_URL
     });
     this.app.use(helmet());
+    this.app.useGlobalPipes(new ValidationPipe());
   }
 
   public configureOpenApi() {

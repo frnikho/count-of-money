@@ -17,11 +17,10 @@ model User {
   firstname      String
   lastname       String
   password       String
-  createdAt      DateTime
-  updatedAt      DateTime
-  createdSources Source[]
-  role           Role
-  authType       AuthType
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
+  role           Role @default(User)
+  authType       AuthType @default(Native)
   preference     UserPreference?
 }
 
@@ -32,8 +31,6 @@ model Source {
   enable      Boolean
   createdAt   DateTime
   updatedAt   DateTime
-  createdBy   User     @relation(fields: [createdById], references: [id])
-  createdById String
 }
 
 model Crypto {
@@ -48,7 +45,7 @@ model Crypto {
 
 model UserPreference {
   id   String @id @unique @default(uuid())
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
   coins CryptoList[]
 }
