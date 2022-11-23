@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import {PrismaService} from "./app/prisma/prisma.service";
 import {NestExpressApplication} from "@nestjs/platform-express";
 import helmet from "helmet";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -19,8 +18,6 @@ class Server {
   }
 
   public async config() {
-    const prismaService = this.app.get(PrismaService);
-    await prismaService.enableShutdownHooks(this.app);
     this.app.enableCors({
       origin: process.env.CORS_URL
     });

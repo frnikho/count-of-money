@@ -1,4 +1,4 @@
-import {Controller, Get, Request, UseGuards, UseInterceptors} from "@nestjs/common";
+import {Controller, Get, Post, Request, UseGuards, UseInterceptors} from "@nestjs/common";
 import {GoogleService} from "./google.service";
 import {GoogleGuard} from "./google.guard";
 import {Public} from "../jwt/jwt.decorator";
@@ -12,6 +12,7 @@ export class GoogleController {
 
   @Public()
   @Get()
+  @Post()
   @UseGuards(GoogleGuard)
   public login() {
     // working with guards
