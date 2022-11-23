@@ -1,11 +1,11 @@
 import {Test, TestingModule} from "@nestjs/testing";
-import {UserService} from "../app/user/user.service";
-import {UserRepository} from "../app/user/user.repository";
-import {PrismaService} from "../app/prisma/prisma.service";
+import {UserService} from "../../app/user/user.service";
+import {UserRepository} from "../../app/user/user.repository";
+import {PrismaService} from "../../app/prisma/prisma.service";
 import {AuthType, Role, User} from '.prisma/client'
-import {AuthService} from "../app/auth/auth.service";
-import {AuthController} from "../app/auth/auth.controller";
-import {EncryptService} from "../app/credentials/encrypt.service";
+import {AuthService} from "../../app/auth/auth.service";
+import {AuthController} from "../../app/auth/auth.controller";
+import {EncryptService} from "../../app/credentials/encrypt.service";
 import {JwtModule} from "@nestjs/jwt";
 
 const mockUser: User = {
@@ -30,7 +30,7 @@ describe('Auth endpoints', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule.register({secret: 'HelloWorld'})],
       controllers: [AuthController],
-      providers: [AuthService, UserService, UserRepository, PrismaService, EncryptService]
+      providers: [AuthService, UserService, UserRepository, PrismaService, EncryptService, ]
     }).compile();
 
     service = module.get<AuthService>(AuthService);

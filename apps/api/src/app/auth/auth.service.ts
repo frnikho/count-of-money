@@ -21,7 +21,7 @@ export class AuthService {
 
   public async validate(body: LoginBody) {
     const user = await this.userRepository.findByEmail(body.email);
-    if (user === null)
+    if (user === null || user === undefined)
       throw new AuthException('User not found !');
     if (!await this.encryptService.compare(body.password, user.password))
       throw new AuthException('Invalid password !');

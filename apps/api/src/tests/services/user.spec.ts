@@ -1,9 +1,9 @@
 import {Test, TestingModule} from "@nestjs/testing";
-import {UserController} from "../app/user/user.controller";
-import {UserService} from "../app/user/user.service";
-import {UserRepository} from "../app/user/user.repository";
-import {PrismaService} from "../app/prisma/prisma.service";
-import {mockedGoogleUser} from "./mock/user.mock";
+import {UserController} from "../../app/user/user.controller";
+import {UserService} from "../../app/user/user.service";
+import {UserRepository} from "../../app/user/user.repository";
+import {PrismaService} from "../../app/prisma/prisma.service";
+import {mockedGoogleUser} from "../mocks/user.mock";
 
 
 describe('User endpoints', () => {

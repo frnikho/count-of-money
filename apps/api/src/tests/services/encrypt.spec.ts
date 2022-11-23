@@ -1,5 +1,5 @@
 import {Test, TestingModule} from "@nestjs/testing";
-import {EncryptService} from "../app/credentials/encrypt.service";
+import {EncryptService} from "../../app/credentials/encrypt.service";
 
 describe('Auth endpoints', () => {
 
