@@ -92,7 +92,7 @@ describe('Google Auth - Mocked google oauth', () => {
   });
 
   it('Redirect google login with good data should respond 201 with new user', async () => {
-    const response = await request(app.getHttpServer())
+    await request(app.getHttpServer())
       .get('/auth/google/redirect?code=bad&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none')
       .send();
   })
