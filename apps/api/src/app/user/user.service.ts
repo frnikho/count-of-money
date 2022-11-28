@@ -10,7 +10,6 @@ export class UserService {
   }
 
   public async loginGoogleAccount(googlePayload: GooglePayload): Promise<User> {
-    console.log(googlePayload.user);
     const user = await this.userRepository.findByEmail(googlePayload.user.email);
     if (user === null || user === undefined) {
       return await this.userRepository.createGoogleAccount({

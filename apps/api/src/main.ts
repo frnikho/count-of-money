@@ -30,6 +30,8 @@ class Server {
       .setTitle('Count the Money')
       .setDescription('Count the Money - a Epitech Projet')
       .setVersion('1.0')
+      .setExternalDoc('', 'https://github.com/frnikho/count-of-money')
+      .addBearerAuth({type: 'apiKey', description: 'Bearer token required for secured routes. You can get a bearer token by calling /auth/login with your credentials', name:'Bearer'})
       .build();
     const document = SwaggerModule.createDocument(this.app, config);
     SwaggerModule.setup('api', this.app, document);
