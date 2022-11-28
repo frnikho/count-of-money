@@ -2181,7 +2181,7 @@ packages:
       - typescript
 
   /@nrwl/eslint-plugin-nx/15.0.13_xnt743bidphohdbygbq5qfvtty:
-    resolution: {integrity: sha512-1OL8oGDKK+3Hdth9OS3SA7lUykN+BjhySBmk2y6IYO71DwGFXxoKkswDvMj6KXARya92zhb+mocks+OfHN7akZB6OQ==}
+    resolution: {integrity: sha512-1OL8oGDKK+3Hdth9OS3SA7lUykN+BjhySBmk2y6IYO71DwGFXxoKkswDvMj6KXARya92zhb+s+OfHN7akZB6OQ==}
     peerDependencies:
       '@typescript-eslint/parser': ^5.29.0
       eslint-config-prettier: ^8.1.0

@@ -66,7 +66,7 @@ describe('Google Auth', () => {
         .get('/auth/google/redirect?code=good&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none')
         .send();
       expect(response.body.statusCode).toBe(400);
-      expect(response.body.message).toBe('An google error occurred !');
+      expect(response.body.message).toBe('A google error occurred !');
     })
   });
 

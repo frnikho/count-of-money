@@ -11,7 +11,7 @@ export class GoogleGuard extends AuthGuard('google') {
 
   handleRequest(err, user) {
     if (!user)
-      throw new AuthException('An google error occurred !');
+      throw new AuthException('A google error occurred !');
     return user;
   }
 
