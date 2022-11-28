@@ -2,23 +2,11 @@ import {Test, TestingModule} from "@nestjs/testing";
 import {UserService} from "../../app/user/user.service";
 import {UserRepository} from "../../app/user/user.repository";
 import {PrismaService} from "../../app/prisma/prisma.service";
-import {AuthType, Role, User} from '.prisma/client'
 import {AuthService} from "../../app/auth/auth.service";
 import {AuthController} from "../../app/auth/auth.controller";
 import {EncryptService} from "../../app/credentials/encrypt.service";
 import {JwtModule} from "@nestjs/jwt";
-
-const mockUser: User = {
-  id: '10fddf75-3424-47ba-93eb-04b369a5f78a',
-  firstname: 'Hello',
-  lastname: 'World',
-  createdAt: new Date,
-  updatedAt: new Date,
-  email: 'helloworld@gmail.com',
-  password: '358227',
-  role: Role.User,
-  authType: AuthType.Native,
-}
+import {mockedUser} from "../mocks/user.mock";
 
 describe('Auth endpoints', () => {
 
@@ -48,14 +36,14 @@ describe('Auth endpoints', () => {
   describe('Auth service functions', () => {
 
     it('Register a non existing native user', async () => {
-      prisma.user.create = jest.fn().mockReturnValueOnce(mockUser);
+      prisma.user.create = jest.fn().mockReturnValueOnce(mockedUser);
       const createdUser = await service.register({firstname: '', lastname: '', email: '', password: ''});
       expect(createdUser).toBeDefined();
     })
 
     it('Register a existing native user', async () => {
-      prisma.user.create = jest.fn().mockReturnValueOnce(mockUser);
-      prisma.user.findFirst = jest.fn().mockReturnValueOnce(mockUser);
+      prisma.user.create = jest.fn().mockReturnValueOnce(mockedUser);
+      prisma.user.findFirst = jest.fn().mockReturnValueOnce(mockedUser);
       try {
         await service.register({firstname: '', lastname: '', email: '', password: ''})
         expect(1).toBe(2);
@@ -65,16 +53,16 @@ describe('Auth endpoints', () => {
     })
 
     it('Validating a existing native user with good password', async () => {
-      mockUser.password = await encryptService.encrypt('HelloWorld');
-      prisma.user.findFirst = jest.fn().mockReturnValueOnce(mockUser);
+      mockedUser.password = await encryptService.encrypt('HelloWorld');
+      prisma.user.findFirst = jest.fn().mockReturnValueOnce(mockedUser);
       const validatedUser = await service.validate({email: 'helloworld@gmail.com', password: 'HelloWorld'})
       expect(validatedUser).toBeDefined();
       expect(validatedUser.email).toBe('helloworld@gmail.com');
     })
 
     it('Validating a existing native user with bad password', async () => {
-      mockUser.password = await encryptService.encrypt('HelloWorld');
-      prisma.user.findFirst = jest.fn().mockReturnValueOnce(mockUser);
+      mockedUser.password = await encryptService.encrypt('HelloWorld');
+      prisma.user.findFirst = jest.fn().mockReturnValueOnce(mockedUser);
       try {
         await service.validate({email: 'helloworld@gmail.com', password: 'HelloWorldA'})
         expect(2).toBe(1);
@@ -94,12 +82,9 @@ describe('Auth endpoints', () => {
     })
 
     it('Create JWT Payload', () => {
-      const payload = service.login(mockUser);
-      expect(payload.user.id).toBe(mockUser.id);
+      const payload = service.login(mockedUser);
+      expect(payload.user.id).toBe(mockedUser.id);
       expect(payload.accessToken).toBeDefined();
     });
-
-
-
   });
 });

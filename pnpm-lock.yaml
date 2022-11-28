@@ -3,9 +3,11 @@ lockfileVersion: 5.4
 specifiers:
   '@nestjs/common': ^9.0.0
   '@nestjs/core': ^9.0.0
+  '@nestjs/event-emitter': ^1.3.1
   '@nestjs/jwt': ^9.0.0
   '@nestjs/passport': ^9.0.0
   '@nestjs/platform-express': ^9.0.0
+  '@nestjs/schedule': ^2.1.0
   '@nestjs/schematics': ^9.0.0
   '@nestjs/swagger': ^6.1.3
   '@nestjs/testing': ^9.2.0
@@ -24,6 +26,7 @@ specifiers:
   '@prisma/client': ^4.6.1
   '@testing-library/react': 13.4.0
   '@types/bcrypt': ^5.0.0
+  '@types/cron': ^2.0.0
   '@types/express-session': ^1.17.5
   '@types/jest': 28.1.1
   '@types/multer': ^1.4.7
@@ -35,6 +38,7 @@ specifiers:
   '@types/supertest': ^2.0.12
   '@typescript-eslint/eslint-plugin': ^5.36.1
   '@typescript-eslint/parser': ^5.36.1
+  axios: 1.1.3
   babel-jest: 28.1.1
   bcrypt: ^5.1.0
   cache-manager: ^5.1.3
@@ -77,13 +81,16 @@ specifiers:
 dependencies:
   '@nestjs/common': 9.2.0_crjre2vledtu4rih5rmvhsoh54
   '@nestjs/core': 9.2.0_jfowmhmgk7kwjudosrpv7e7liy
+  '@nestjs/event-emitter': 1.3.1_v5qdouhazba6t4koo63x35nolu
   '@nestjs/jwt': 9.0.0_@nestjs+common@9.2.0
   '@nestjs/passport': 9.0.0_s6va3jdeufsye4wwu25es3p4om
   '@nestjs/platform-express': 9.2.0_pf2fb646rsvo5szivgkaevcpvi
+  '@nestjs/schedule': 2.1.0_v5qdouhazba6t4koo63x35nolu
   '@nestjs/swagger': 6.1.3_n5tlzb6gajrp65xewlgrtvzeqy
   '@nestjs/throttler': 3.1.0_v5qdouhazba6t4koo63x35nolu
   '@nrwl/nest': 15.0.13_jamexvtodrdog2l5xusvnqwuei
   '@prisma/client': 4.6.1_prisma@4.6.1
+  axios: 1.1.3
   bcrypt: 5.1.0
   cache-manager: 5.1.3
   class-transformer: 0.5.1
@@ -118,6 +125,7 @@ devDependencies:
   '@nrwl/workspace': 15.0.13_uv4y2g64llhlg3qob55wy2vvv4
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
   '@types/bcrypt': 5.0.0
+  '@types/cron': 2.0.0
   '@types/express-session': 1.17.5
   '@types/jest': 28.1.1
   '@types/multer': 1.4.7
@@ -1970,6 +1978,19 @@ packages:
     transitivePeerDependencies:
       - encoding
 
+  /@nestjs/event-emitter/1.3.1_v5qdouhazba6t4koo63x35nolu:
+    resolution: {integrity: sha512-AmHkPTe/cP1lbQEm15TIe9IDEAszl5VAR8HjMS2TDtNRuSzwyoJgZUVcRnH7Yk9/2DX5qMtmw6a1MHeR8DD+rw==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0
+      reflect-metadata: ^0.1.12
+    dependencies:
+      '@nestjs/common': 9.2.0_crjre2vledtu4rih5rmvhsoh54
+      '@nestjs/core': 9.2.0_jfowmhmgk7kwjudosrpv7e7liy
+      eventemitter2: 6.4.6
+      reflect-metadata: 0.1.13
+    dev: false
+
   /@nestjs/jwt/9.0.0_@nestjs+common@9.2.0:
     resolution: {integrity: sha512-ZsXGY/wMYKzEhymw2+dxiwrHTRKIKrGszx6r2EjQqNLypdXMQu0QrujwZJ8k3+XQV4snmuJwwNakQoA2ILfq8w==}
     peerDependencies:
@@ -2024,6 +2045,20 @@ packages:
       tslib: 2.4.1
     transitivePeerDependencies:
       - supports-color
+
+  /@nestjs/schedule/2.1.0_v5qdouhazba6t4koo63x35nolu:
+    resolution: {integrity: sha512-4Xaw56WiW3VsxEPPnj/iDtfjcO+sUZyYAeRxD0gnF5havncxjAnv52Iw7UH3DuzzUA784xPGgGje3Fq0Gu925g==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0
+      reflect-metadata: ^0.1.12
+    dependencies:
+      '@nestjs/common': 9.2.0_crjre2vledtu4rih5rmvhsoh54
+      '@nestjs/core': 9.2.0_jfowmhmgk7kwjudosrpv7e7liy
+      cron: 2.0.0
+      reflect-metadata: 0.1.13
+      uuid: 8.3.2
+    dev: false
 
   /@nestjs/schematics/9.0.3_typescript@4.8.4:
     resolution: {integrity: sha512-kZrU/lrpVd2cnK8I3ibDb3Wi1ppl3wX3U3lVWoL+DzRRoezWKkh8upEL4q0koKmuXnsmLiu3UPxFeMOrJV7TSA==}
@@ -3155,6 +3190,13 @@ packages:
     resolution: {integrity: sha512-t73xJJrvdTjXrn4jLS9VSGRbz0nUY3cl2DMGDU48lKl+HR9dbbjW2A9r3g40VA++mQpy6uuHg33gy7du2BKpog==}
     dev: true
 
+  /@types/cron/2.0.0:
+    resolution: {integrity: sha512-xZM08fqvwIXgghtPVkSPKNgC+JoMQ2OHazEvyTKnNf7aWu1aB6/4lBbQFrb03Td2cUGG7ITzMv3mFYnMu6xRaQ==}
+    dependencies:
+      '@types/luxon': 3.1.0
+      '@types/node': 18.11.9
+    dev: true
+
   /@types/eslint-scope/3.7.4:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
@@ -3260,6 +3302,10 @@ packages:
     resolution: {integrity: sha512-zm6xBQpFDIDM6o9r6HSgDeIcLy82TKWctCXEPbJJcXb5AKmi5BNNdLXneixK4lplX3PqIVcwLBCGE/kAGnlD4A==}
     dependencies:
       '@types/node': 18.11.9
+
+  /@types/luxon/3.1.0:
+    resolution: {integrity: sha512-gCd/HcCgjqSxfMrgtqxCgYk/22NBQfypwFUG7ZAyG/4pqs51WLTcUzVp1hqTbieDYeHS3WoVEh2Yv/2l+7B0Vg==}
+    dev: true
 
   /@types/mime/3.0.1:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
@@ -4050,6 +4096,16 @@ packages:
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
+    dev: false
+
+  /axios/1.2.0:
+    resolution: {integrity: sha512-zT7wZyNYu3N5Bu0wuZ6QccIf93Qk1eV8LOewxgjOZFd2DenOs98cJ7+Y6703d0wkaXGY6/nZd4EweJaHz9uzQw==}
+    dependencies:
+      follow-redirects: 1.15.2
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
 
   /axobject-query/2.2.0:
     resolution: {integrity: sha512-Td525n+iPOOyUQIeBfcASuG6uJsDOITl7Mds5gFyerkWiX7qhUTdYUBlSgNMyVqtSJqwpt1kXGLdUt6SykLMRA==}
@@ -4805,6 +4861,12 @@ packages:
 
   /create-require/1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
+
+  /cron/2.0.0:
+    resolution: {integrity: sha512-RPeRunBCFr/WEo7WLp8Jnm45F/ziGJiHVvVQEBSDTSGu6uHW49b2FOP2O14DcXlGJRLhwE7TIoDzHHK4KmlL6g==}
+    dependencies:
+      luxon: 1.28.0
+    dev: false
 
   /cross-spawn/7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
@@ -5754,6 +5816,10 @@ packages:
   /etag/1.8.1:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
+
+  /eventemitter2/6.4.6:
+    resolution: {integrity: sha512-OHqo4wbHX5VbvlbB6o6eDwhYmiTjrpWACjF8Pmof/GTD6rdBNdZFNck3xlhqOiQFGCOoq3uzHvA0cQpFHIGVAQ==}
+    dev: false
 
   /eventemitter2/6.4.7:
     resolution: {integrity: sha512-tYUSVOGeQPKt/eC1ABfhHy5Xd96N3oIijJvN3O9+TsC28T5V9yX9oEfEK5faP0EFSNVOG97qtAS68GBrQB2hDg==}
@@ -7935,6 +8001,10 @@ packages:
     resolution: {integrity: sha512-ysxwsnTKdAx96aTRdhDOCQfDgbHnt8SK0KY8SEjO0wHinhWOFTESbjVCMPbU1uGXg/ch4lifqx0wfjOawU2+WA==}
     engines: {node: '>=12'}
 
+  /luxon/1.28.0:
+    resolution: {integrity: sha512-TfTiyvZhwBYM/7QdAVDh+7dBTBA29v4ik0Ce9zda3Mnf8on1S5KJI8P2jKFZ8+5C0jhmr0KwJEO/Wdpm0VeWJQ==}
+    dev: false
+
   /lz-string/1.4.4:
     resolution: {integrity: sha512-0ckx7ZHRPqb0oUm8zNr+90mtf9DQB60H1wMCjBtfi62Kl3a7JbHob6gA2bC+xRvZoOL+1hzUK8jeuEIQE8svEQ==}
     hasBin: true
@@ -8255,7 +8325,7 @@ packages:
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.0-rc.28
       '@zkochan/js-yaml': 0.0.6
-      axios: 1.1.3
+      axios: 1.2.0
       chalk: 4.1.0
       chokidar: 3.5.3
       cli-cursor: 3.1.0

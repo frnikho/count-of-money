@@ -6,3 +6,6 @@ export * from './lib/auth/google/GooglePayload';
 
 export * from './lib/Role'
 export * from './lib/auth/AuthType'
+
+export * from './lib/crypto/CryptoApi';
+export * from './lib/crypto/CryptoCurrency';
