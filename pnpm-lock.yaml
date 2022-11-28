@@ -5196,7 +5196,7 @@ packages:
     engines: {node: '>= 0.6'}
 
   /depd/2.0.0:
-    resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/mocks/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
+    resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
     engines: {node: '>= 0.8'}
 
   /destroy/1.2.0:
