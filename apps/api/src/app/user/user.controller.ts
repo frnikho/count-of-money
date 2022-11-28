@@ -1,7 +1,7 @@
 import {Controller, Delete, Get, Patch} from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 
-@ApiTags('User')
+@ApiTags('user')
 @Controller('user')
 export class UserController {
 
