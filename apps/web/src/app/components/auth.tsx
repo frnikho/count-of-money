@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { Button, Checkbox, Form, Input, Tabs, Row, Col, Divider } from "antd";
 import { UserOutlined, LockOutlined, GoogleOutlined } from "@ant-design/icons";
 import "./auth.scss"
