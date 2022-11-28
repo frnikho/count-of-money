@@ -6,6 +6,7 @@ import { Settings } from './components/settings'
 import { Profile } from './components/profile'
 
 export function App() {
+
   return (
     <>
       <Router>
