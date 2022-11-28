@@ -45,7 +45,6 @@ model Crypto {
   localization Json
 
   enable Boolean @default(true)
-  markets Json
   createdAt DateTime? @default(now())
   updatedAt DateTime? @default(now())
   user CryptoList[]
@@ -66,11 +65,6 @@ model CryptoList {
   createdAt DateTime @default(now())
 
   @@id([userPreferenceId, cryptoId])
-}
-
-model GlobalPreference {
-  enabledCrypto Crypto[]
-  articlesToShow Integer @default(10)
 }
 
 enum AuthType {
