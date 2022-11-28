@@ -16,10 +16,14 @@ services:
     container_name: com_api
     ports:
       - "4200:4200"
+    depends_on:
+      - db
   db:
     image: postgres
     restart: always
     container_name: com_db
+    ports:
+      - "5432:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
