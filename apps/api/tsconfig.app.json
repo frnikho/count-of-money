@@ -6,7 +6,9 @@
     "types": ["node"],
     "emitDecoratorMetadata": true,
     "target": "es2015",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
   },
   "exclude": ["jest.config.ts", "**/*.spec.ts", "**/*.test.ts"],
   "include": ["**/*.ts"]

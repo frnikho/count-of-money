@@ -29,8 +29,8 @@ model Source {
   name        String
   link        String
   enable      Boolean
-  createdAt   DateTime
-  updatedAt   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
 
 model Crypto {
@@ -38,8 +38,15 @@ model Crypto {
   apiId String @unique
   symbol String
   name String
-  createdAt   DateTime
-  updatedAt   DateTime
+  image String
+
+  link String
+  market_data Json
+  localization Json
+
+  enable Boolean @default(true)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
   user CryptoList[]
 }
 

@@ -1,7 +1,7 @@
 import {Controller, Get, Patch} from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 
-@ApiTags('user', 'Preference')
+@ApiTags('User')
 @Controller('user/preference')
 export class PreferenceController {
 
