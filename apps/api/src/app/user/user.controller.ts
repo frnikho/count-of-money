@@ -1,13 +1,15 @@
-import {Controller, Delete, Get, Patch} from "@nestjs/common";
+import {Controller, Delete, Get, Patch, Request, UseInterceptors} from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
+import {UserInterceptor} from "./user.interceptor";
 
 @ApiTags('User')
 @Controller('user')
 export class UserController {
 
   @Get()
-  public getMe() {
-    //TODO
+  @UseInterceptors(UserInterceptor)
+  public getMe(@Request() req) {
+    return req.user;
   }
 
   @Patch()
