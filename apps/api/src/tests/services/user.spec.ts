@@ -3,7 +3,7 @@ import {UserController} from "../../app/user/user.controller";
 import {UserService} from "../../app/user/user.service";
 import {UserRepository} from "../../app/user/user.repository";
 import {PrismaService} from "../../app/prisma/prisma.service";
-import {mockedGoogleUser} from "../mocks/user.mock";
+import {mockedGoogleUser, mockedUser} from "../mocks/user.mock";
 
 
 describe('User endpoints', () => {
@@ -45,6 +45,29 @@ describe('User endpoints', () => {
       const user = await service.loginGoogleAccount({user: {email: 'helloworldgoogle@gmail.com', firstName: 'Hello', lastName: 'World', picture: 'abc'}})
       expect(user).toBeDefined();
       expect(user.email).toBe('helloworldgoogle@gmail.com')
+    });
+  });
+
+  describe('Update user', () => {
+    it('Update user firstname and lastname', async () => {
+      prisma.user.update = jest.fn().mockReturnValueOnce(mockedUser);
+      const updatedUser = await service.updateUser(mockedUser, {lastname: 'Hello World', firstname: 'abc'});
+      expect(updatedUser).toBeDefined();
+
+    });
+  });
+
+  describe('Delete user', () => {
+    it('Delete an user', async () => {
+      prisma.user.delete = jest.fn().mockReturnValueOnce(undefined);
+      expect(await service.deleteUser(mockedUser)).toBe(undefined);
+    })
+  })
+
+  describe('Find user', () => {
+    it('By id', async () => {
+      prisma.user.findFirst = jest.fn().mockReturnValueOnce(mockedUser);
+      expect(await repository.findById(mockedUser.id)).toBeDefined();
     });
   });
 

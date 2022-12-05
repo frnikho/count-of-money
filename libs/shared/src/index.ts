@@ -9,3 +9,12 @@ export * from './lib/auth/AuthType'
 
 export * from './lib/crypto/CryptoApi';
 export * from './lib/crypto/CryptoCurrency';
+
+export * from './lib/admin/Source';
+
+export * from './lib/FeedApi';
+
+export * from './lib/admin/GlobalConfig';
+
+export * from './lib/user/preference/Preference'
+export * from './lib/user/preference/CryptoList'

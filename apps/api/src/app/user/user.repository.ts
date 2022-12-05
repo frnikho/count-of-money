@@ -1,6 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {PrismaService} from "../prisma/prisma.service";
 import {AuthType, User} from '.prisma/client'
+import {UpdateUserBody} from "@count-of-money/shared";
 
 @Injectable()
 export class UserRepository {
@@ -43,5 +44,24 @@ export class UserRepository {
     })
   }
 
+  public async update(user: User, body: UpdateUserBody) {
+    return this.prisma.user.update({
+      where: {
+        id: user.id
+      },
+      data: {
+        firstname: body.firstname,
+        lastname: body.lastname,
+      }
+    })
+  }
+
+  public async delete(user: User) {
+    return this.prisma.user.delete({
+      where: {
+        id: user.id
+      }
+    });
+  }
 
 }
