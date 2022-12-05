@@ -16,7 +16,6 @@ export class CryptoService {
   }
 
   public getCrypto(user: User, crypto: Crypto) {
-    console.log(user.role);
     return crypto;
   }
 

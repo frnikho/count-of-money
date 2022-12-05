@@ -9,7 +9,7 @@ export class UserApiController {
     api.get<User>('user', authorize(accessToken)).then((response) => {
       return callback(response.data);
     }).catch((err) => {
-      callback(undefined, 'An error occurred !');
+      callback(undefined, `Une erreur est survenue lors de la récupération des informations de l'utilisateur`);
     });
   }
 }

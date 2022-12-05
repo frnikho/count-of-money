@@ -80,7 +80,6 @@ export const UserContextProvider = ({children}: React.PropsWithChildren) => {
         UserApiController.getLoggedUser(accessToken, (user) => {
           if (user) {
             setUser(user);
-            setAccessToken(accessToken);
           }
         });
       }
@@ -92,8 +91,6 @@ export const UserContextProvider = ({children}: React.PropsWithChildren) => {
         if (user) {
           reloadUser(user);
           setAccessToken(cookies.at);
-        } else {
-          console.log(error);
         }
       });
     } else {

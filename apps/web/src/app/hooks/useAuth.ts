@@ -3,10 +3,10 @@ import {UserContext} from "../context/UserContext";
 
 export function useAuth() {
 
-  const userCtx = useContext(UserContext);
+  const userContext = useContext(UserContext);
 
   return {
-    ...userCtx,
+    ...userContext,
   }
 
 }

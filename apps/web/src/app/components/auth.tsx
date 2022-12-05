@@ -10,14 +10,6 @@ import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import {AuthState} from "../context/UserContext";
 
-function onFinish(values: unknown) {
-    console.log('Success:', values);
-}
-
-function onFinishFailed(errorInfo: unknown) {
-    console.log('Failed:', errorInfo);
-}
-
 const tabMarginSpan = {
     lg: 9,
     md: 8,
@@ -63,21 +55,25 @@ export function Auth() {
     login(getValues().email, getValues().password, (user) => {
       navigate('/');
       toast(`Bienvenue ${user.firstname}`, {type: 'success'});
-    }, (err) => {
+    }, () => {
       toast('Impossible de vous connecter !', {type: 'error'});
     });
   }, [login, navigate, getValues]);
 
   const onClickRegisterNative = () => {
     AuthApiController.nativeRegister(getValues(), (response, error) => {
-      console.log(response, error);
+      if (error) {
+        toast('Une erreur est survenue !', {type: 'error'});
+      } else if (response) {
+        toast('Votre compte à bien été créer ! Connectez-vous maintenant', {type: 'success'});
+      }
     });
   }
 
   const onClickLoginGoogle = useGoogleLogin({
     scope: 'email profile openid',
     redirect_uri: process.env["NX_GOOGLE_CALLBACK"],
-    onError: (errorResponse) => {console.log(errorResponse)},
+    onError: (errorResponse) => null,
     onSuccess: (codeResponse) => {
       AuthApiController.redirectGoogleLogin({code: codeResponse.code, scope: codeResponse.scope, prompt: "consent", authuser: 0}, () => {
         //TODO
@@ -101,8 +97,6 @@ export function Auth() {
                             <Form
                                 name="basic"
                                 initialValues={{ remember: true }}
-                                onFinish={onFinish}
-                                onFinishFailed={onFinishFailed}
                                 autoComplete="off"
                                 style={{ margin: '0 auto' }}
                             >
@@ -144,8 +138,6 @@ export function Auth() {
                             <Form
                                 name="basic"
                                 initialValues={{ remember: true }}
-                                onFinish={onFinish}
-                                onFinishFailed={onFinishFailed}
                                 autoComplete="off"
                                 style={{ margin: '0 auto' }}
                             >
