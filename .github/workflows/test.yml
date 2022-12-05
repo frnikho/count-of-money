@@ -16,9 +16,9 @@ jobs:
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       CORS_URL: ${{ secrets.CORS_URL }}
-      GOOGLE_ID: ${{ secrets.GOOGLE_ID }}
+      NX_GOOGLE_ID: ${{ secrets.NX_GOOGLE_ID }}
       GOOGLE_SECRET: ${{ secrets.GOOGLE_SECRET }}
-      GOOGLE_CALLBACK: ${{ secrets.GOOGLE_CALLBACK }}
+      NX_GOOGLE_CALLBACK: ${{ secrets.NX_GOOGLE_CALLBACK }}
       APP_SECRET: ${{ secrets.APP_SECRET }}
     services:
       postgres:

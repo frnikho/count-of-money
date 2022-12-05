@@ -1,14 +1,14 @@
-import { Button, Checkbox, Form, Input, Tabs, Row, Col, Divider } from "antd";
-import { UserOutlined, LockOutlined, GoogleOutlined } from "@ant-design/icons";
+import {Button, Checkbox, Col, Divider, Form, Input, Row, Tabs} from "antd";
+import {GoogleOutlined, LockOutlined, UserOutlined} from "@ant-design/icons";
 import "./auth.scss"
-
-function onFinish(values: any) {
-    console.log('Success:', values);
-};
-
-function onFinishFailed(errorInfo: any) {
-    console.log('Failed:', errorInfo);
-};
+import {useGoogleLogin} from "@react-oauth/google";
+import {AuthApiController} from "../controllers/AuthApiController";
+import {useForm} from "react-hook-form";
+import {useCallback, useEffect} from "react";
+import {useAuth} from "../hooks/useAuth";
+import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
+import {AuthState} from "../context/UserContext";
 
 const tabMarginSpan = {
     lg: 9,
@@ -33,7 +33,55 @@ const buttonResponsive = {
     }
 }
 
+export type AuthForm = {
+  password: string;
+  email: string;
+  firstname: string;
+  lastname: string;
+}
+
 export function Auth() {
+
+  const navigate = useNavigate();
+  const {login, authState} = useAuth();
+  const {setValue, getValues, watch} = useForm<AuthForm>({defaultValues: {lastname: '', firstname: '', password: '', email: ''}});
+
+  useEffect(() => {
+    if (authState === AuthState.Logged)
+      navigate('/');
+  }, [navigate, authState]);
+
+  const onClickLoginNative = useCallback(() => {
+    login(getValues().email, getValues().password, (user) => {
+      navigate('/');
+      toast(`Bienvenue ${user.firstname}`, {type: 'success'});
+    }, () => {
+      toast('Impossible de vous connecter !', {type: 'error'});
+    });
+  }, [login, navigate, getValues]);
+
+  const onClickRegisterNative = () => {
+    AuthApiController.nativeRegister(getValues(), (response, error) => {
+      if (error) {
+        toast('Une erreur est survenue !', {type: 'error'});
+      } else if (response) {
+        toast('Votre compte à bien été créer ! Connectez-vous maintenant', {type: 'success'});
+      }
+    });
+  }
+
+  const onClickLoginGoogle = useGoogleLogin({
+    scope: 'email profile openid',
+    redirect_uri: process.env["NX_GOOGLE_CALLBACK"],
+    onError: (errorResponse) => null,
+    onSuccess: (codeResponse) => {
+      AuthApiController.redirectGoogleLogin({code: codeResponse.code, scope: codeResponse.scope, prompt: "consent", authuser: 0}, () => {
+        //TODO
+      });
+    },
+    flow: 'auth-code'
+  });
+
     return (
         <div>
             <Row justify="center" align="middle">
@@ -49,8 +97,6 @@ export function Auth() {
                             <Form
                                 name="basic"
                                 initialValues={{ remember: true }}
-                                onFinish={onFinish}
-                                onFinishFailed={onFinishFailed}
                                 autoComplete="off"
                                 style={{ margin: '0 auto' }}
                             >
@@ -58,15 +104,15 @@ export function Auth() {
                                     name="mail"
                                     rules={[{ required: true, message: 'Merci de rentrer votre adresse email!' }]}
                                 >
-                                    <Input className="toAlign" placeholder="Addresse email" prefix={<UserOutlined className="site-form-item-icon" />} />
+                                    <Input value={watch('email')} onChange={(e) => setValue('email', e.currentTarget.value)} className="toAlign" placeholder="Addresse email" prefix={<UserOutlined className="site-form-item-icon" />} />
                                 </Form.Item>
 
                                 <Form.Item
                                     name="password"
                                     rules={[{ required: true, message: 'Merci de rentrer votre mot de passe!' }]}
                                 >
-                                    <Input.Password placeholder="Mot de passe" prefix={<LockOutlined className="site-form-item-icon" />} className="toAlign" />
-                                    <a className="login-form-forgot" href="">
+                                    <Input.Password value={watch('password')} onChange={(e) => setValue('password', e.currentTarget.value)} placeholder="Mot de passe" prefix={<LockOutlined className="site-form-item-icon" />} className="toAlign" />
+                                    <a className="login-form-forgot" href="/">
                                         Mot de passe oublié ?
                                     </a>
                                 </Form.Item>
@@ -76,13 +122,13 @@ export function Auth() {
                                 </Form.Item>
 
                                 <Form.Item {...buttonResponsive}>
-                                    <Button type="primary" htmlType="submit" block>
+                                    <Button type="primary" onClick={onClickLoginNative} block>
                                         Connexion
                                     </Button>
                                 </Form.Item>
                                 <Divider />
                                 <Form.Item wrapperCol={{span: 24}}>
-                                    <Button type="primary" icon={<GoogleOutlined />} block>
+                                    <Button type="primary" icon={<GoogleOutlined />} block onClick={() => onClickLoginGoogle()}>
                                         Connexion avec Google
                                     </Button>
                                 </Form.Item>
@@ -92,8 +138,6 @@ export function Auth() {
                             <Form
                                 name="basic"
                                 initialValues={{ remember: true }}
-                                onFinish={onFinish}
-                                onFinishFailed={onFinishFailed}
                                 autoComplete="off"
                                 style={{ margin: '0 auto' }}
                             >
@@ -104,7 +148,7 @@ export function Auth() {
                                             hasFeedback
                                             rules={[{ required: true, message: 'Merci de rentrer votre prénom!' }]}
                                         >
-                                            <Input placeholder="Prénom" className="toAlign" />
+                                            <Input value={watch('firstname')} onChange={(e) => setValue('firstname', e.currentTarget.value)} placeholder="Prénom" className="toAlign" />
                                         </Form.Item>
                                     </Col>
                                     <Col span={12} style={{ paddingLeft: '5px' }}>
@@ -113,7 +157,7 @@ export function Auth() {
                                             hasFeedback
                                             rules={[{ required: true, message: 'Merci de rentrer votre nom!' }]}
                                         >
-                                            <Input placeholder="Nom" className="toAlign" />
+                                            <Input value={watch('lastname')} onChange={(e) => setValue('lastname', e.currentTarget.value)} placeholder="Nom" className="toAlign" />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -122,7 +166,7 @@ export function Auth() {
                                     hasFeedback
                                     rules={[{ required: true, type: "email", message: 'Merci de rentrer votre adresse email!' }]}
                                 >
-                                    <Input placeholder="Addresse email" className="toAlign" prefix={<UserOutlined className="site-form-item-icon" />} />
+                                    <Input value={watch('email')} onChange={(e) => setValue('email', e.currentTarget.value)} placeholder="Addresse email" className="toAlign" prefix={<UserOutlined className="site-form-item-icon" />} />
                                 </Form.Item>
 
                                 <Form.Item
@@ -130,7 +174,7 @@ export function Auth() {
                                     hasFeedback
                                     rules={[{ required: true, message: 'Merci de rentrer votre mot de passe!', min: 8 }]}
                                 >
-                                    <Input.Password placeholder="Mot de passe" className="toAlign" prefix={<LockOutlined className="site-form-item-icon" />} />
+                                    <Input.Password value={watch('password')} onChange={(e) => setValue('password', e.currentTarget.value)} placeholder="Mot de passe" className="toAlign" prefix={<LockOutlined className="site-form-item-icon" />} />
                                 </Form.Item>
 
                                 <Form.Item
@@ -150,7 +194,7 @@ export function Auth() {
                                 </Form.Item>
 
                                 <Form.Item {...buttonResponsive}>
-                                    <Button type="primary" htmlType="submit" block>
+                                    <Button type="primary" block onClick={onClickRegisterNative}>
                                         Inscription
                                     </Button>
                                 </Form.Item>
