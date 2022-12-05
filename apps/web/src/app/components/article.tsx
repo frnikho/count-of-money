@@ -1,7 +1,7 @@
 import { Button, Col, Row, Typography, Space, Breadcrumb } from "antd";
-const { Text } = Typography;
-import './article.scss';
 import {useSecure} from "../hooks/useSecure";
+import './article.scss';
+const { Text } = Typography;
 
 export function Article(props: { title: string, body: string, src: string, date: string, author: string, link: string }) {
   useSecure();
