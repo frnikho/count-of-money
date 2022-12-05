@@ -1,8 +1,10 @@
 import { Button, Col, Row, Typography, Space, Breadcrumb } from "antd";
 const { Text } = Typography;
 import './article.scss';
+import {useSecure} from "../hooks/useSecure";
 
 export function Article(props: { title: string, body: string, src: string, date: string, author: string, link: string }) {
+  useSecure();
   return (
     <div>
       <Row>
@@ -33,12 +35,12 @@ export function Article(props: { title: string, body: string, src: string, date:
           </Space>
         </Col>
       </Row>
-      <Row id="articleContent" style={{ paddingTop: '3vh' }}>
+      <Row id="articleContent">
         <Col>
           <Text>{props.body}</Text>
         </Col>
       </Row>
-      <Row id="articleLink" style={{ paddingTop: '2vh' }}>
+      <Row id="articleLink">
         <Col>
           <Button type="primary" href={props.link}>
             Lien vers l'article
