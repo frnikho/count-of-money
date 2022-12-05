@@ -1,5 +1,6 @@
 import { Avatar, Button, Col, Form, Input, Modal, Row } from "antd";
 import { useState } from "react";
+import { useSecure } from "../hooks/useSecure";
 import './profile.scss';
 
 const tabSpan = {
@@ -32,6 +33,7 @@ const fieldsSpan = {
 
 
 export function Profile() {
+  useSecure();
   const [isModalVisible, setIsModalVisible] = useState(false);
   
   function showModal() {
