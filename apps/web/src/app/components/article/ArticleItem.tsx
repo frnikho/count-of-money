@@ -16,7 +16,7 @@ export const ArticleItem = ({article}: Props) => {
 
   return (
     <div style={{display: 'flex', flexDirection: 'row', gap: '1.8em', margin: '0.6em'}}>
-      <img onClick={() => {}} width={400} style={{objectFit: 'cover', maxWidth: 400, maxHeight: 200}} src={article.thumbnail} alt={"Article cover"}/>
+      <img onClick={() => null} width={400} style={{objectFit: 'cover', maxWidth: 400, maxHeight: 200}} src={article.thumbnail} alt={"Article cover"}/>
       <div style={{maxWidth: 600, minWidth: 200}}>
         <h1>{article.title}</h1>
         <p>{article.description}</p>
