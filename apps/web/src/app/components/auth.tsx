@@ -8,7 +8,7 @@ import {useCallback, useEffect} from "react";
 import {useAuth} from "../hooks/useAuth";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
-import {AuthState} from "../context/UserContext";
+import {AuthState} from "../contexts/UserContext";
 
 const tabMarginSpan = {
     lg: 9,

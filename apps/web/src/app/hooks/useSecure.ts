@@ -1,6 +1,6 @@
 import {useAuth} from "./useAuth";
 import {useEffect} from "react";
-import {AuthState} from "../context/UserContext";
+import {AuthState} from "../contexts/UserContext";
 import {useNavigate} from "react-router-dom";
 
 type SecureOptions = {

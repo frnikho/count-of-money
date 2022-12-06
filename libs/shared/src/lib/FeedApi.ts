@@ -3,7 +3,7 @@ import {ApiProperty} from "@nestjs/swagger";
 export interface FeedApi {
   status: string;
   feed:   Feed;
-  items:  Item[];
+  items:  Article[];
 }
 
 export class Feed {
@@ -35,7 +35,7 @@ export class Feed {
   }
 }
 
-export class Item {
+export class Article {
   @ApiProperty()
   title:       string;
 

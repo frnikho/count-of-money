@@ -20,7 +20,7 @@ export class CryptoCurrency {
   link: string;
 
   @ApiProperty()
-  market_data: unknown;
+  market_data: any;
 
   @ApiProperty()
   localization: unknown;
