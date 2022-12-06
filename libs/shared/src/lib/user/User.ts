@@ -1,6 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
 import {IsOptional, Length} from "class-validator";
-import {Role} from "../Role";
 
 export class User {
   @ApiProperty()
@@ -16,7 +15,7 @@ export class User {
   email: string;
 
   @ApiProperty()
-  role: Role;
+  role: string;
 
   @ApiProperty({default: new Date()})
   createdAt: Date;
@@ -24,7 +23,7 @@ export class User {
   @ApiProperty({default: new Date()})
   updatedAt: Date;
 
-  constructor(id: string, firstname: string, lastname: string, email: string, createdAt: Date, updatedAt: Date, role: Role) {
+  constructor(id: string, firstname: string, lastname: string, email: string, createdAt: Date, updatedAt: Date, role: string) {
     this.id = id;
     this.firstname = firstname;
     this.lastname = lastname;
