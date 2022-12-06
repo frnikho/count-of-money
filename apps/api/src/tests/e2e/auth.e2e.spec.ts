@@ -3,7 +3,7 @@ import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import {PrismaService} from "../../app/prisma/prisma.service";
-import {createMockContext} from "../tools/context";
+import {createMockContext} from "../tools/context.mock";
 import {UserService} from "../../app/user/user.service";
 import {PrismaClient} from ".prisma/client";
 import {mockedUser} from "../mocks/user.mock";
