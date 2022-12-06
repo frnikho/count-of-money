@@ -35,12 +35,10 @@ export class CryptoConsumer {
     }
   }
 
-  public async loadCryptoHistory() {
+/*  public async loadCryptoHistory() {
     axios.get(`https://api.coingecko.com/api/v3/coins/abc/market_chart?vs_currency=eur&days=max`).then((response) => {
 
-    }).catch((err) => {
-
     });
-  }
+  }*/
 
 }
