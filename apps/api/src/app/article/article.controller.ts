@@ -1,49 +1,48 @@
-import {Body, Controller, Delete, Get, Patch, Request, UseInterceptors} from "@nestjs/common";
+import {Controller, Get, Param, Request} from "@nestjs/common";
+import { Public } from "../auth/jwt/jwt.decorator";
+import {ArticleService} from "./article.service";
 import {ApiBearerAuth, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiServiceUnavailableResponse, ApiTags, ApiUnauthorizedResponse} from "@nestjs/swagger";
-import {UserInterceptor} from "./user.interceptor";
-import {UpdateUserBody, User} from "@count-of-money/shared";
-import {UserService} from "./user.service";
+import { Feed } from "@count-of-money/shared";
 import {ResponseError} from "@count-of-money/documentation";
 
-@ApiTags('User')
-@Controller('user')
-export class UserController {
+@Controller('article')
+@ApiTags('Article')
+export class ArticleController {
 
-  constructor(private userService: UserService) {
+  constructor(private articleService: ArticleService) {
+  }
+
+  @Public()
+  @Get('public')
+  @ApiOkResponse({type: Feed, isArray: true})
+  @ApiForbiddenResponse({description: `Forbidden, you don't have right to do that`, type: ResponseError})
+  @ApiUnauthorizedResponse({description: 'Unauthorized, you need to be logged !', type: ResponseError})
+  @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
+  @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
+  public getRestrictedArticles() {
+    return this.articleService.getRestrictedArticles();
   }
 
   @Get()
-  @UseInterceptors(UserInterceptor)
-  @ApiOkResponse({type: User})
+  @ApiOkResponse({type: Feed, isArray: true})
   @ApiForbiddenResponse({description: `Forbidden, you don't have right to do that`, type: ResponseError})
   @ApiUnauthorizedResponse({description: 'Unauthorized, you need to be logged !', type: ResponseError})
   @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
   @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
   @ApiBearerAuth()
-  public getMe(@Request() req): Promise<User> {
-    return req.user;
+  public getAllArticles() {
+    return this.articleService.getAllArticles();
   }
 
-  @Patch()
-  @ApiOkResponse({type: User})
+  @Public()
+  @Get(':sourceId/:articleId')
+  @ApiOkResponse({type: Feed})
   @ApiForbiddenResponse({description: `Forbidden, you don't have right to do that`, type: ResponseError})
   @ApiUnauthorizedResponse({description: 'Unauthorized, you need to be logged !', type: ResponseError})
   @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
   @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
   @ApiBearerAuth()
-  public updateMe(@Request() req, @Body() body: UpdateUserBody) {
-    return this.userService.updateUser(req.user, body);
+  public getArticle(@Request() req, @Param('sourceId') sourceId: string, @Param('articleId') articleId: string) {
+    return this.articleService.getArticle(req.user, sourceId, articleId);
   }
-
-  @Delete()
-  @ApiOkResponse({type: User})
-  @ApiForbiddenResponse({description: `Forbidden, you don't have right to do that`, type: ResponseError})
-  @ApiUnauthorizedResponse({description: 'Unauthorized, you need to be logged !', type: ResponseError})
-  @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
-  @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
-  @ApiBearerAuth()
-  public deleteMe(@Request() req) {
-    return this.userService.deleteUser(req.user)
-  }
-
 }

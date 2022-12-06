@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "../node_modules/.prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -12,59 +12,67 @@ datasource db {
 }
 
 model User {
-  id             String         @id @unique @default(uuid())
-  email          String         @unique
-  firstname      String
-  lastname       String
-  password       String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now())
-  role           Role @default(User)
-  authType       AuthType @default(Native)
-  preference     UserPreference?
+  id         String          @id @unique @default(uuid())
+  email      String          @unique
+  firstname  String
+  lastname   String
+  password   String
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @default(now())
+  role       Role            @default(User)
+  authType   AuthType        @default(Native)
+  preference UserPreference?
+  CryptoList CryptoList[]
 }
 
 model Source {
-  id          String   @id @unique @default(uuid())
-  name        String
-  link        String
-  enable      Boolean
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id        String   @id @unique @default(uuid())
+  name      String
+  link      String
+  enable    Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Config {
+  id             String @unique @default("global")
+  articlesToShow Int
+  cryptoToShow   Int
 }
 
 model Crypto {
-  id String @id @unique @default(uuid())
-  apiId String @unique
+  id     String @id @unique @default(uuid())
+  apiId  String @unique
   symbol String
-  name String
-  image String
+  name   String
+  image  String
 
-  link String
-  market_data Json
+  link         String
+  market_data  Json
   localization Json
 
-  enable Boolean @default(true)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @default(now())
-  user CryptoList[]
+  enable       Boolean     @default(true)
+  createdAt    DateTime?   @default(now())
+  updatedAt    DateTime?   @default(now())
+  CryptoList   CryptoList[]
 }
 
 model UserPreference {
-  id   String @id @unique @default(uuid())
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
-  coins CryptoList[]
+  id         String       @id @unique @default(uuid())
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String       @unique
+  cryptoList CryptoList[]
 }
 
 model CryptoList {
-  userPreference UserPreference @relation(fields: [userPreferenceId], references: [id])
-  userPreferenceId String
-  crypto Crypto @relation(fields: [cryptoId], references: [id])
-  cryptoId String
-  createdAt DateTime @default(now())
-
-  @@id([userPreferenceId, cryptoId])
+  id               String          @id @unique @default(uuid())
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String
+  name             String
+  default          Boolean
+  cryptos          Crypto[]
+  UserPreference   UserPreference? @relation(fields: [userPreferenceId], references: [id])
+  userPreferenceId String?
 }
 
 enum AuthType {

@@ -1,9 +1,10 @@
 import {Injectable} from "@nestjs/common";
-import {LoginBody, LoginResponse, RegisterBody, User} from "@count-of-money/shared";
+import {LoginBody, LoginResponse, RegisterBody} from "@count-of-money/shared";
 import {UserRepository} from "../user/user.repository";
 import {AuthException} from "./auth.exception";
 import {EncryptService} from "../credentials/encrypt.service";
 import { JwtService } from '@nestjs/jwt';
+import {User} from '.prisma/client';
 
 @Injectable()
 export class AuthService {

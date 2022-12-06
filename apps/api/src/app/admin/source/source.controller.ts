@@ -1,89 +1,81 @@
-import {Controller, Get, HttpCode, Param, Post, Request} from "@nestjs/common";
-import {ApiBearerAuth, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiServiceUnavailableResponse, ApiTags, ApiUnauthorizedResponse} from "@nestjs/swagger";
-import {CryptoService} from "./crypto.service";
-import {CryptoPipe} from "./crypto.pipe";
-import {Crypto} from '.prisma/client';
-import {CryptoCurrency} from "@count-of-money/shared";
+import {Body, Controller, Delete, Get, Param, Patch, Post, Request} from "@nestjs/common";
+import {SourceService} from "./source.service";
+import {SourcePipe} from "./source.pipe";
+import {AddSourceBody, Source, UpdateSourceBody} from "@count-of-money/shared";
+import {ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiServiceUnavailableResponse, ApiTags, ApiUnauthorizedResponse} from "@nestjs/swagger";
 import {ResponseError} from "@count-of-money/documentation";
 
-@Controller('crypto')
-@ApiTags('Cryptocurrency')
-export class CryptoController {
+@Controller('admin/source')
+@ApiTags('Admin')
+export class SourceController {
 
-  constructor(private cryptoService: CryptoService) {
+  constructor(private sourceService: SourceService) {
   }
 
   @Get()
-  @HttpCode(200)
-  @ApiOkResponse({description: 'Array of Cryptocurrency', type: CryptoCurrency, isArray: true})
+  @ApiOkResponse({description: 'Getting all articles sources', type: Source, isArray: true})
   @ApiForbiddenResponse({description: `Forbidden, you don't have right to do that`, type: ResponseError})
   @ApiUnauthorizedResponse({description: 'Unauthorized, you need to be logged !', type: ResponseError})
   @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
   @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
   @ApiBearerAuth()
-  @ApiOperation({description: 'Get user preference crypto currencies. If user is admin, all disabled crypto currencies will be return'})
-  public getCrypto() {
-    // User Preference Crypto List
+  public getAllSources(@Request() req) {
+    return this.sourceService.getAllSources(req.user);
   }
 
-  @Get('all')
-  @HttpCode(200)
-  @ApiOkResponse({description: 'Array of Cryptocurrency', type: CryptoCurrency, isArray: true})
+  @Get(':id')
+  @ApiOkResponse({description: 'Getting a specific article source', type: Source})
   @ApiForbiddenResponse({description: `Forbidden, you don't have right to do that`, type: ResponseError})
   @ApiUnauthorizedResponse({description: 'Unauthorized, you need to be logged !', type: ResponseError})
   @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
   @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
   @ApiBearerAuth()
-  public getAllCrypto(@Request() req) {
-    return this.cryptoService.getAllCrypto(req.user);
+  public getSource(@Request() req, @Param('id', SourcePipe) source: Source) {
+    return this.sourceService.getSource(req.user, source);
   }
 
-  @Get(':cryptoId')
-  @ApiOperation({description: 'Get a specific Cryptocurrency'})
-  @ApiOkResponse({description: 'Cryptocurrency', type: CryptoCurrency})
+  @Post()
+  @ApiCreatedResponse({description: 'New article source added !', type: Source})
   @ApiForbiddenResponse({description: `Forbidden, you don't have right to do that`, type: ResponseError})
   @ApiUnauthorizedResponse({description: 'Unauthorized, you need to be logged !', type: ResponseError})
   @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
   @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
   @ApiBearerAuth()
-  public getCryptoInfo() {
-    //TODO waiting for user preference
+  public addSource(@Request() req, @Body() body: AddSourceBody) {
+    return this.sourceService.createSource(req.user, body);
   }
 
-  @Post(':cryptoId/toggle')
-  @HttpCode(200)
-  @ApiOkResponse({description: 'Cryptocurrency', type: CryptoCurrency})
+  @Delete()
+  @ApiOkResponse({description: 'all sources has been deleted !', type: Source})
   @ApiForbiddenResponse({description: `Forbidden, you don't have right to do that`, type: ResponseError})
   @ApiUnauthorizedResponse({description: 'Unauthorized, you need to be logged !', type: ResponseError})
   @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
   @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
   @ApiBearerAuth()
-  public toggleCrypto(@Request() req, @Param('cryptoId', CryptoPipe) crypto: Crypto) {
-    return this.cryptoService.toggleCrypto(req.user, crypto, !crypto.enable);
+  public deleteAllSource(@Request() req) {
+    return this.sourceService.deleteAllSource(req.user);
   }
 
-  @Post(':cryptoId/enable')
-  @HttpCode(200)
-  @ApiOkResponse({description: 'Cryptocurrency', type: CryptoCurrency})
+  @Delete(':id')
+  @ApiOkResponse({description: 'A specific source has been deleted !', type: Source})
   @ApiForbiddenResponse({description: `Forbidden, you don't have right to do that`, type: ResponseError})
   @ApiUnauthorizedResponse({description: 'Unauthorized, you need to be logged !', type: ResponseError})
   @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
   @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
   @ApiBearerAuth()
-  public enableCrypto(@Request() req, @Param('cryptoId', CryptoPipe) crypto: Crypto) {
-    return this.cryptoService.toggleCrypto(req.user, crypto, true);
+  public deleteSource(@Request() req, @Param('id', SourcePipe) source: Source) {
+    return this.sourceService.deleteSource(req.user, source);
   }
 
-  @Post(':cryptoId/disable')
-  @HttpCode(200)
-  @ApiOkResponse({description: 'Cryptocurrency', type: CryptoCurrency})
+  @Patch(':id')
+  @ApiOkResponse({description: 'A specific sources has been updated !', type: Source})
   @ApiForbiddenResponse({description: `Forbidden, you don't have right to do that`, type: ResponseError})
   @ApiUnauthorizedResponse({description: 'Unauthorized, you need to be logged !', type: ResponseError})
   @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
   @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
   @ApiBearerAuth()
-  public disableCrypto(@Request() req, @Param('cryptoId', CryptoPipe) crypto: Crypto) {
-    return this.cryptoService.toggleCrypto(req.user, crypto, false);
+  public updateSource(@Request() req, @Param('id', SourcePipe) source: Source, @Body() body: UpdateSourceBody) {
+    return this.sourceService.updateSource(req.user, source, body);
   }
 
 }

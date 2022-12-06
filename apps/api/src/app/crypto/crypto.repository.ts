@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {PrismaService} from "../prisma/prisma.service";
-import {CryptoApi, User} from "@count-of-money/shared";
-import {Crypto} from '.prisma/client';
+import {CryptoApi} from "@count-of-money/shared";
+import {Crypto, User} from '.prisma/client';
 
 @Injectable()
 export class CryptoRepository {

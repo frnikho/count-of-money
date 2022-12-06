@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {UserRepository} from "./user.repository";
-import {GooglePayload} from "@count-of-money/shared";
+import {GooglePayload, UpdateUserBody} from "@count-of-money/shared";
 import {User} from '.prisma/client';
 
 @Injectable()
@@ -19,6 +19,14 @@ export class UserService {
       });
     }
     return user;
+  }
+
+  public updateUser(user: User, body: UpdateUserBody) {
+    return this.userRepository.update(user, body);
+  }
+
+  public deleteUser(user: User) {
+    return this.userRepository.delete(user);
   }
 
 }
