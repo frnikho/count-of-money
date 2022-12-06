@@ -1,19 +1,19 @@
 import { Route, Routes } from 'react-router-dom'
 import { Auth } from './components/auth'
-import { Home } from './components/home'
+import { Home } from './pages/home/Home'
 import { Profile } from './components/profile';
 import { Article } from './components/article';
+import {MainLayout} from "./layout/MainLayout";
 import { Admin } from './components/admin';
+import './app.module.scss';
 
 export function App() {
 
   return (
     <Routes>
-      <Route path="/">
+      <Route path="/" element={<MainLayout/>}>
         <Route index element={<Home/>} />
-      </Route>
-      <Route path="/admin">
-        <Route index element={<Admin/>} />
+        <Route path={"admin"} element={<Admin/>}/>
       </Route>
       <Route path="/profile">
         <Route index element={<Profile/>} />

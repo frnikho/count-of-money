@@ -1,7 +1,18 @@
 import {ArrayMinSize, IsOptional, Length} from "class-validator";
+import {ApiProperty} from "@nestjs/swagger";
+import {CryptoCurrency} from "../../crypto/CryptoCurrency";
 
 export class CryptoList {
+  @ApiProperty()
+  name: string;
 
+  @ApiProperty()
+  cryptos: CryptoCurrency[];
+
+  constructor(name: string, cryptos: CryptoCurrency[]) {
+    this.name = name;
+    this.cryptos = cryptos;
+  }
 }
 
 export class CreateCryptoListBody {
