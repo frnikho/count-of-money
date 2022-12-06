@@ -1,0 +1,27 @@
+.ant-transfer-list-header-selected {
+    display: none;
+}
+
+.ant-transfer-list-header-dropdown {
+    display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+    .ant-transfer-list {
+        width: 50% !important;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .ant-transfer-list {
+        width: 40% !important;
+    }
+}
+
+h2 {
+    margin: 0
+}
+
+h4 {
+    margin-bottom: 1vh;
+}
