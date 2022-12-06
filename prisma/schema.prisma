@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String          @id @unique @default(uuid())
+  email      String          @unique
+  firstname  String
+  lastname   String
+  password   String
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @default(now())
+  role       Role            @default(User)
+  authType   AuthType        @default(Native)
+  preference UserPreference?
+  CryptoList CryptoList[]
+}
+
+model Source {
+  id        String   @id @unique @default(uuid())
+  name      String
+  link      String
+  enable    Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Config {
+  id             String @unique @default("global")
+  articlesToShow Int
+  cryptoToShow   Int
+}
+
+model Crypto {
+  id     String @id @unique @default(uuid())
+  apiId  String @unique
+  symbol String
+  name   String
+  image  String
+
+  link         String
+  market_data  Json
+  localization Json
+
+  enable       Boolean     @default(true)
+  createdAt    DateTime?   @default(now())
+  updatedAt    DateTime?   @default(now())
+  CryptoList   CryptoList[]
+}
+
+model UserPreference {
+  id         String       @id @unique @default(uuid())
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String       @unique
+  cryptoList CryptoList[]
+}
+
+model CryptoList {
+  id               String          @id @unique @default(uuid())
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String
+  name             String
+  default          Boolean
+  cryptos          Crypto[]
+  UserPreference   UserPreference? @relation(fields: [userPreferenceId], references: [id])
+  userPreferenceId String?
+}
+
+enum AuthType {
+  Native
+  Google
+}
+
+enum Role {
+  User
+  Admin
+}

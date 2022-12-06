@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ethereum",
+    "symbol": "eth",
+    "name": "Ethereum"
+  },
+  {
+    "id": "bitcoin",
+    "symbol": "btc",
+    "name": "Bitcoin"
+  },
+  {
+    "id": "shiba-inu",
+    "symbol": "shib",
+    "name": "Shiba Inu"
+  },
+  {
+    "id": "dogecoin",
+    "symbol": "doge",
+    "name": "Dogecoin"
+  },
+  {
+    "id": "tether",
+    "symbol": "usdt",
+    "name": "Tether"
+  },
+  {
+    "id": "binance-bitcoin",
+    "symbol": "btcb",
+    "name": "Binance Bitcoin"
+  },
+  {
+    "id": "ripple",
+    "symbol": "xrp",
+    "name": "XRP"
+  },
+  {
+    "id": "the-graph",
+    "symbol": "grt",
+    "name": "The Graph"
+  },
+  {
+    "id": "nucypher",
+    "symbol": "nu",
+    "name": "NuCypher"
+  }
+]

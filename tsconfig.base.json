@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@count-of-money/documentation": ["libs/documentation/src/index.ts"],
       "@count-of-money/shared": ["libs/shared/src/index.ts"],
       "@count-of-money/utils": ["libs/utils/src/index.ts"]
     }

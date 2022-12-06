@@ -26,7 +26,11 @@ jobs:
           version: 7.14.0
       - name: Install dependencies
         run: "pnpm i"
-      - name: Lint api
+      - name: Lint api app
         run: "pnpm nx lint api"
-      - name: Lint web
+      - name: Lint web app
         run: "pnpm nx lint web"
+      - name: Lint utils module
+        run: "pnpm nx lint utils"
+      - name: Lint shared module
+        run: "pnpm nx lint shared"
