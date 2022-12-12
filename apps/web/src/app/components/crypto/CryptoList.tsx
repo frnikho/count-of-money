@@ -32,7 +32,6 @@ export const CryptoListComponent = (props: Props) => {
     if (si !== -1) {
       const array = selectedCrypto;
       array.splice(si, 1);
-      console.log(array);
       setSelectedCrypto(array);
     } else {
       setSelectedCrypto([...selectedCrypto, crypto]);

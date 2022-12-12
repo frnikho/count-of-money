@@ -22,7 +22,6 @@ export const ArticlePage = () => {
         setArticle(article);
       } else {
         toast('Impossible de récupérer l\'article !', {type: 'error'});
-        console.log(error);
       }
     });
   }, []);

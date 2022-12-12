@@ -30,10 +30,8 @@ export function Home() {
     if (authState === AuthState.Logged) {
       ArticleApiController.loadArticles(getAccessToken(), (articles, error) => {
         setArticles(articles);
-        console.log(articles[0]);
       })
     } else if (authState === AuthState.NotLogged) {
-      console.log('NOT LOGGED !');
       ArticleApiController.loadPublicArticles((articles) => {
         setArticles(articles);
       });

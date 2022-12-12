@@ -11,7 +11,6 @@ export class AdminControllerApi {
     api.get<GlobalConfig>(`admin/config`, authorize(accessToken)).then((response) => {
       return callback(response.data, undefined);
     }).catch((err) => {
-      console.log(err);
       callback(undefined, 'Une erreur est survenue !');
     });
   }
@@ -20,7 +19,6 @@ export class AdminControllerApi {
     api.get<Source[]>(`admin/source`, authorize(accessToken)).then((response) => {
       return callback(response.data, undefined);
     }).catch((err) => {
-      console.log(err);
       callback([], 'Une erreur est survenue !');
     });
   }
@@ -29,7 +27,6 @@ export class AdminControllerApi {
     api.get<Source>(`admin/source/${sourceId}`, authorize(accessToken)).then((response) => {
       return callback(response.data, undefined);
     }).catch((err) => {
-      console.log(err);
       callback(undefined, 'Une erreur est survenue !');
     });
   }
@@ -38,7 +35,6 @@ export class AdminControllerApi {
     api.post<Source>(`admin/source/`, body, authorize(accessToken)).then((response) => {
       return callback(response.data, undefined);
     }).catch((err) => {
-      console.log(err);
       callback(undefined, 'Une erreur est survenue !');
     });
   }
@@ -47,7 +43,6 @@ export class AdminControllerApi {
     api.delete<Source>(`admin/source/${sourceId}`, authorize(accessToken)).then((response) => {
       return callback(response.data, undefined);
     }).catch((err) => {
-      console.log(err);
       callback(undefined, 'Une erreur est survenue !');
     });
   }
@@ -56,7 +51,6 @@ export class AdminControllerApi {
     api.patch<Source>(`admin/source/${sourceId}`, body, authorize(accessToken)).then((response) => {
       return callback(response.data, undefined);
     }).catch((err) => {
-      console.log(err);
       callback(undefined, 'Une erreur est survenue !');
     });
   }
@@ -65,7 +59,6 @@ export class AdminControllerApi {
     api.patch<GlobalConfig>(`admin/config`, body, authorize(accessToken)).then((response) => {
       return callback(response.data, undefined);
     }).catch((err) => {
-      console.log(err);
       callback(undefined, 'Une erreur est survenue !');
     });
   }

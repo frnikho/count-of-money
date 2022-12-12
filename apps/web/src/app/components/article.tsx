@@ -1,9 +1,9 @@
 import { Button, Col, Row, Typography, Space, Breadcrumb } from "antd";
 import './article.scss';
 const { Text } = Typography;
+const HTMLRegex = /(<([^>]+)>)/ig;
 
 export function Article(props: { title: string, body: string, src: string, date: Date, author: string, link: string }) {
-  console.log(props.body);
   return (
     <div>
       <Row>
@@ -36,7 +36,7 @@ export function Article(props: { title: string, body: string, src: string, date:
       </Row>
       <Row id="articleContent">
         <Col>
-          <Text>{props.body.replace(/(<([^>]+)>)/ig, '')}</Text>
+          <Text>{props.body.replace(HTMLRegex, '')}</Text>
         </Col>
       </Row>
       <Row id="articleLink">

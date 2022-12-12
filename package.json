@@ -6,15 +6,15 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "dev:api": "nx serve api",
-    "dev:web": "nx serve web -p 4000",
-    "prod:api": "npx prisma generate && npx prisma migrate deploy && nx build api && node dist/apps/api/main.js",
-    "prod:web": "nx build web && serve -s dist/apps/web -p 4000",
+    "dev:api": "ENV=dev nx serve api",
+    "dev:web": "ENV=dev nx serve web -p 4000",
+    "prod:api": "ENV=prod npx prisma generate && npx prisma migrate deploy && nx build api && node dist/apps/api/main.js",
+    "prod:web": "ENV=prod nx build web && serve -s dist/apps/web -p 4000",
     "migrate": "npx prisma migrate dev",
-    "build:api": "nx build api",
-    "build:web": "nx build web",
-    "test:api": "nx test api",
-    "test:web": "nx test web"
+    "build:api": "ENV=prod nx build api",
+    "build:web": "ENV=prod nx build web",
+    "test:api": "ENV=test nx test api",
+    "test:web": "ENV=test nx test web"
   },
   "private": true,
   "dependencies": {

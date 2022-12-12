@@ -64,7 +64,6 @@ export function Admin() {
 
   const loadSources = useCallback(() => {
     AdminControllerApi.getSources(getAccessToken(), (sources, error) => {
-      console.log(sources, error);
       if (sources) {
         setSources(sources)
       }
@@ -73,7 +72,6 @@ export function Admin() {
 
   const loadCryptoCurrencies = useCallback(() => {
     CryptoControllerApi.getAll(getAccessToken(), (crypto, error) => {
-      console.log(crypto);
       if (error) {
         toast('Une erreur est survenue !', {type: 'error'});
       }
@@ -159,7 +157,7 @@ export function Admin() {
         return;
       }
       if (article) {
-        toast('Nombre d\'article mis à jour !');
+        toast('Nombre d\'article mi(s) à jour !');
       } else {
         toast('Nombre de crypto mis à jour !');
       }
@@ -180,7 +178,7 @@ export function Admin() {
                   <Button type='primary' style={{ marginTop: '1vh' }} onClick={() => updateModals('createSource', true)}>Ajouter une source</Button>
               </Col>
               <Col style={{ paddingTop: '2vh' }}>
-                  <h4>Nombre d'articles affichés</h4>
+                  <h4>Nombre d'article(s) affichés</h4>
                   <InputNumber min={1} max={20} value={watch('articleToShow')} onChange={(e) => e ? setValue('articleToShow', e) : null} />
               </Col>
               <Col style={{ paddingTop: '1vh' }}>
