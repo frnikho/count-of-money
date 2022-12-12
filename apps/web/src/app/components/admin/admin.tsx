@@ -164,6 +164,12 @@ export function Admin() {
     })
   }, [getAccessToken, getValues])
 
+  const onClickUpdateArticle = useCallback(() => onClickUpdate(true), [onClickUpdate]);
+
+  const onClickAddSource = useCallback(() => {
+    updateModals('createSource', true)
+  }, [updateModals])
+
   return (
       <>
           <Row justify="center" align="middle">
@@ -175,14 +181,14 @@ export function Admin() {
               </Col>
               <Col style={{ paddingTop: '1vh' }}>
                   <Table dataSource={sources.map((s, index) => ({...s}))} columns={columns} size="small" pagination={false} />
-                  <Button type='primary' style={{ marginTop: '1vh' }} onClick={() => updateModals('createSource', true)}>Ajouter une source</Button>
+                  <Button type='primary' style={{ marginTop: '1vh' }} onClick={onClickAddSource}>Ajouter une source</Button>
               </Col>
               <Col style={{ paddingTop: '2vh' }}>
                   <h4>Nombre d'article(s) affichés</h4>
                   <InputNumber min={1} max={20} value={watch('articleToShow')} onChange={(e) => e ? setValue('articleToShow', e) : null} />
               </Col>
               <Col style={{ paddingTop: '1vh' }}>
-                  <Button type="primary" onClick={() => onClickUpdate(true)}>Valider</Button>
+                  <Button type="primary" onClick={onClickUpdateArticle}>Valider</Button>
               </Col>
           </Row>
           <Row style={{ display: 'flex', flexDirection: 'column'}}>

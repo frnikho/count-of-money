@@ -155,9 +155,9 @@ export const CryptoListComponent = (props: Props) => {
         <h3 className={"title"}>Ma liste de surveillance: {props.list?.name}</h3>
         {props.list?.cryptos.map((crypto, index) => {
           return (
-            <Row className={selectedCrypto.find((s) => s.id === crypto.id) ? 'crypto_list-active' : "crypto_list"} onClick={() => onClickCrypto(crypto)} key={index}>
+            <Row className={selectedCrypto.find((s) => s.id === crypto.id) ? 'crypto_list-active' : "crypto_list"} onClick={() => onClickCrypto(crypto)} key={'crypto_list_item' + index}>
               <Col xxl={3} xl={4} lg={6} sm={4} xs={4}>
-                <Avatar style={{minWidth: 50}} size={50} key={index} src={crypto.image} />
+                <Avatar style={{minWidth: 50}} size={50} key={'article_avatar' + index} src={crypto.image} />
               </Col>
               <Col xs={8} sm={4}>
                 <div style={{display: 'flex', flexDirection: 'column', gap: 2}}>

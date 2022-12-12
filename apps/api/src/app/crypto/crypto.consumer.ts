@@ -5,7 +5,6 @@ import {CryptoApi} from "@count-of-money/shared";
 import {CryptoRepository} from "./crypto.repository";
 import {Cron, CronExpression} from "@nestjs/schedule";
 import {OnEvent} from "@nestjs/event-emitter";
-import { readFile } from "fs/promises";
 import * as path from "path";
 import * as fs from "fs";
 
@@ -21,7 +20,7 @@ export class CryptoConsumer {
   public async loadAndSaveCrypto() {
     const test = Boolean(process.env.TEST);
     const existingCrypto = await this.prismaService.crypto.findMany();
-    const availableCrypto = await fs.readFileSync(path.join(__dirname, process.env.ENV === 'test' ? '../../assets/cryptoToTest.json' : './assets/availablesCrypto.json'));
+    const availableCrypto = fs.readFileSync(path.join(__dirname, process.env.ENV === 'test' ? '../../assets/cryptoToTest.json' : './assets/availablesCrypto.json'));
     for (const crypto of JSON.parse(availableCrypto.toString())) {
       const c = existingCrypto.find((c) => c.apiId === crypto.id);
       const timer = ms => new Promise(res => setTimeout(res, ms))
@@ -50,5 +49,4 @@ export class CryptoConsumer {
       Logger.error("Can't fetch crypto market charts : " + id);
     });
   }
-
 }

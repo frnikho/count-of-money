@@ -65,8 +65,8 @@ describe('Auth endpoints', () => {
     });
 
 
-    it('Get crypto', async () => {
-      const crypto = await service.getCrypto(mockedUser, mockedCrypto());
+    it('Get crypto',  () => {
+      const crypto = service.getCrypto(mockedUser, mockedCrypto());
       expect(crypto).toBeDefined();
     })
 

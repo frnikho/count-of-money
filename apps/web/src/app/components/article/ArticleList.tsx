@@ -10,7 +10,7 @@ type Props = {
 export const ArticleList = (props: Props) => {
   return (
     <div>
-      {props.articles.map((article, index) => <ArticleItem key={index} article={article}/>)}
+      {props.articles.map((article, index) => <ArticleItem key={'article_list' + index} article={article}/>)}
     </div>
   );
 };
