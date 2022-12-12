@@ -1,11 +1,12 @@
-import {useAuth} from "../../hooks/useAuth";
-import {CryptoListComponent} from "../../components/crypto/CryptoList";
+import {useAuth} from "../hooks/useAuth";
+import {CryptoListComponent} from "../components/crypto/CryptoList";
 import {useCallback, useEffect, useState} from "react";
-import {UserApiController} from "../../controllers/UserApiController";
-import {AuthState} from "../../contexts/UserContext";
+import {UserApiController} from "../controllers/UserApiController";
+import {AuthState} from "../contexts/UserContext";
 import {Article, CryptoList} from "@count-of-money/shared";
-import {ArticleApiController} from "../../controllers/ArticleApiController";
-import {ArticleList} from "../../components/article/ArticleList";
+import {ArticleApiController} from "../controllers/ArticleApiController";
+import {ArticleList} from "../components/article/ArticleList";
+import '../styles/text.scss';
 
 export function Home() {
 
@@ -31,8 +32,7 @@ export function Home() {
         setArticles(articles);
       })
     } else if (authState === AuthState.NotLogged) {
-      console.log('NOT LOGGED !');
-      ArticleApiController.loadPublicArticles((articles, error) => {
+      ArticleApiController.loadPublicArticles((articles) => {
         setArticles(articles);
       });
     }
@@ -41,12 +41,13 @@ export function Home() {
   useEffect(() => {
     loadArticles();
     loadCryptoList();
-  }, [loadArticles, loadCryptoList]);
+  }, [loadArticles, loadCryptoList, authState]);
 
   return (
-    <>
+    <div style={{marginLeft: '2.2em', marginTop: '2.2em'}}>
       {cryptoList.map((c, index) => <CryptoListComponent key={index} list={c}/>)}
+      <h1 className={"title"} style={{marginTop: 50}}>Articles</h1>
       <ArticleList articles={articles}/>
-    </>
+    </div>
   );
 }

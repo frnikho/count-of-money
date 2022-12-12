@@ -2,6 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {User, Crypto, Role} from ".prisma/client";
 import {CryptoRepository} from "./crypto.repository";
 import {IsAdmin} from "../user/user.pipe";
+import {UpdateEnableCrypto} from "@count-of-money/shared";
 
 @Injectable()
 export class CryptoService {
@@ -23,4 +24,12 @@ export class CryptoService {
     return this.cryptoRepository.toggleCrypto(user, crypto, enable);
   }
 
+  public async updateCrypto(@IsAdmin() user: User, body: UpdateEnableCrypto) {
+    for (const c of body.disableCrypto) {
+      await this.cryptoRepository.updateCryptoWithApiId(c, false);
+    }
+    for (const c of body.enableCrypto) {
+      await this.cryptoRepository.updateCryptoWithApiId(c, true);
+    }
+  }
 }

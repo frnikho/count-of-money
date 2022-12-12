@@ -14,7 +14,7 @@ export class ArticleService {
     const sources = await this.sourceRepository.getAllSources();
     return (await Promise.all(sources.filter((s) => s.enable).map(async (s) => {
       const response = await axios.get<FeedApi>(`https://api.rss2json.com/v1/api.json?rss_url=${s.link}`);
-      return response.data.items.flat();
+      return response.data.items.map((it) => ({...it, source: s.id})).flat();
     }))).flat();
   }
 
@@ -23,7 +23,7 @@ export class ArticleService {
     const sources = await this.sourceRepository.getAllSources();
     const feed = await Promise.all(sources.filter((s) => s.enable).map(async (s) => {
       const response = await axios.get<FeedApi>(`https://api.rss2json.com/v1/api.json?rss_url=${s.link}`);
-      return response.data.items.flat();
+      return response.data.items.map((it) => ({...it, source: s.id})).flat();
     }));
     return feed.flat().filter((s, index) => index < k.articlesToShow);
   }

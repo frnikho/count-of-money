@@ -1,5 +1,8 @@
 import { Modal } from "antd";
 import { Source } from "@count-of-money/shared";
+import {useAuth} from "../hooks/useAuth";
+import {AdminControllerApi} from "../controllers/AdminControllerApi";
+import {toast} from "react-toastify";
 
 type Props = {
     record: Source,
@@ -9,11 +12,25 @@ type Props = {
 }
 
 export function DeleteSourceModal({record, onOk, onCancel, open} : Props) {
+
+  const {getAccessToken} = useAuth();
+
+  const onClickDelete = () => {
+    AdminControllerApi.deleteSource(getAccessToken(), record.id, (source, error) => {
+      if (error) {
+        toast('Impossible de supprimer cette source !', {type: 'error'})
+      } else if (source) {
+        toast('Source supprimer avec succès !', {type: 'success'})
+        onOk();
+      }
+    });
+  }
+
     return(
         <Modal
             title="Supprimer"
             open={open}
-            onOk={onOk}
+            onOk={onClickDelete}
             onCancel={onCancel}
             okText="Supprimer"
             cancelText="Annuler"

@@ -35,9 +35,10 @@ model Source {
 }
 
 model Config {
-  id             String @unique @default("global")
+  id             String   @unique @default("global")
   articlesToShow Int
   cryptoToShow   Int
+  defaultCrypto  Crypto[]
 }
 
 model Crypto {
@@ -50,11 +51,14 @@ model Crypto {
   link         String
   market_data  Json
   localization Json
+  charts       Json?
 
-  enable       Boolean     @default(true)
-  createdAt    DateTime?   @default(now())
-  updatedAt    DateTime?   @default(now())
-  CryptoList   CryptoList[]
+  enable     Boolean      @default(true)
+  createdAt  DateTime?    @default(now())
+  updatedAt  DateTime?    @default(now())
+  CryptoList CryptoList[]
+  Config     Config?      @relation(fields: [configId], references: [id])
+  configId   String?
 }
 
 model UserPreference {

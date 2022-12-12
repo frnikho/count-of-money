@@ -27,7 +27,7 @@ export const MainLayout = () => {
           top: 0,
           bottom: 0,
         }}
-        width={250}
+        width={200}
         breakpoint="lg"
         collapsedWidth="0"
         onCollapse={(collapsed, type) => {
@@ -36,7 +36,7 @@ export const MainLayout = () => {
       >
         <SidebarMenu/>
       </Sider>
-      <Layout style={{marginLeft: collapsed ? 0 : 250 }}>
+      <Layout style={{marginLeft: collapsed ? 0 : 200 }}>
         <HeaderMenu/>
         <div style={{padding: 8}}>
           <Outlet/>

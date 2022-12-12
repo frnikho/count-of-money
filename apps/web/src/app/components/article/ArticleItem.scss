@@ -1,0 +1,29 @@
+.article_img {
+  opacity: 1;
+  transition: 0.8s;
+}
+
+.article_img:hover {
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+@mixin article_link {
+  cursor: pointer;
+}
+
+.article_title {
+  @include article_link
+}
+
+.article_desc {
+  @include article_link
+}
+
+.article_date {
+  @include article_link
+}
+
+.article_author {
+  @include article_link
+}
