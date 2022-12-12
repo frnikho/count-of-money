@@ -22,4 +22,12 @@ export class ArticleApiController {
     });
   }
 
+  public static loadArticle(sourceId: string, articleId: string, callback: ArticleCallback) {
+    api.get<Article>(`article/${sourceId}/${articleId}`).then((response) => {
+      return callback(response.data)
+    }).catch(() => {
+      return callback(undefined, "Une erreur est survenue !");
+    });
+  }
+
 }

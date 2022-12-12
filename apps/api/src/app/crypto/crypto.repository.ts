@@ -40,6 +40,28 @@ export class CryptoRepository {
     });
   }
 
+  public updateCryptoWithApiId(apidId: string, enable: boolean): Promise<Crypto> {
+    return this.prismaService.crypto.update({
+      where: {
+        apiId: apidId,
+      },
+      data: {
+        enable: enable,
+      }
+    });
+  }
+
+  public updateCharts(id: string, charts: any): Promise<Crypto> {
+    return this.prismaService.crypto.update({
+      where: {
+        apiId: id,
+      },
+      data: {
+        charts: charts,
+      }
+    });
+  }
+
   public getAllCrypto() {
     return this.prismaService.crypto.findMany();
   }

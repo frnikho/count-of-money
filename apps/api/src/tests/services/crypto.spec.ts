@@ -8,20 +8,24 @@ import {CryptoRepository} from "../../app/crypto/crypto.repository";
 import {mockedUser} from "../mocks/user.mock";
 import {mockedCrypto} from "../mocks/crypto.mock";
 import {Role} from '.prisma/client';
+import {CryptoConsumer} from "../../app/crypto/crypto.consumer";
 describe('Auth endpoints', () => {
 
   let service: CryptoService;
+  let consumer: CryptoConsumer;
   let prisma: PrismaService;
 
   beforeEach(async () => {
+    process.env = { ...process.env, TEST: 'true' }
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule.register({secret: 'HelloWorld'})],
       controllers: [CryptoController],
-      providers: [CryptoService, CryptoRepository, UserRepository, PrismaService]
+      providers: [CryptoService, CryptoRepository, CryptoConsumer, UserRepository, PrismaService]
     }).compile();
 
     service = module.get<CryptoService>(CryptoService);
     prisma = module.get<PrismaService>(PrismaService);
+    consumer = module.get<CryptoConsumer>(CryptoConsumer);
     prisma.crypto.findMany = jest.fn().mockReturnValueOnce([]);
     prisma.crypto.findFirst = jest.fn().mockReturnValueOnce(null);
     prisma.crypto.create = jest.fn().mockReturnValueOnce(undefined);
@@ -31,6 +35,11 @@ describe('Auth endpoints', () => {
     expect(service).toBeDefined();
     expect(prisma).toBeDefined();
   })
+
+  it('Crypto consumer', async () => {
+    jest.setTimeout(10000);
+    await consumer.loadAndSaveCrypto()
+  });
 
 
   describe('Crypto services functions', () => {
@@ -53,6 +62,19 @@ describe('Auth endpoints', () => {
       mockedUser.role = Role.User;
       const crypto = await service.toggleCrypto(mockedUser, mockedCrypto(), true);
       expect(crypto.enable).toBe(true);
+    });
+
+
+    it('Get crypto', async () => {
+      const crypto = await service.getCrypto(mockedUser, mockedCrypto());
+      expect(crypto).toBeDefined();
+    })
+
+    it('Update crypto', async () => {
+      mockedUser.role = 'User';
+      prisma.crypto.update = jest.fn().mockReturnValueOnce(mockedCrypto());
+      await service.updateCrypto(mockedUser, {disableCrypto: ['bitcoin'], enableCrypto: ['ethereum']});
+      expect(1).toBe(1);
     });
 
   })

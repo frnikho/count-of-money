@@ -10,6 +10,8 @@ export const mockedCrypto = (crypto?: Partial<Crypto>): Crypto => ({
   name: crypto?.name ?? 'Bitcoin',
   localization: crypto?.localization ?? '',
   market_data: crypto?.market_data ?? '',
+  configId: '',
   updatedAt: new Date(),
+  charts: {},
   createdAt: new Date(),
 })
