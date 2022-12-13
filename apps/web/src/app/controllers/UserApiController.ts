@@ -10,7 +10,7 @@ export class UserApiController {
   public static getLoggedUser(accessToken: string, callback: UserCallback) {
     api.get<User>('user', authorize(accessToken)).then((response) => {
       return callback(response.data);
-    }).catch((err) => {
+    }).catch(() => {
       callback(undefined, `Une erreur est survenue lors de la récupération des informations de l'utilisateur`);
     });
   }
@@ -36,6 +36,14 @@ export class UserApiController {
       return callback(response.data);
     }).catch(() => {
       callback(undefined, `Une erreur est survenue lors de la récupération de la list de crypto `);
+    });
+  }
+
+  public static deleteCryptoList(accessToken: string, cryptoListId: string, callback: CryptoListCallback) {
+    api.delete<CryptoList>(`user/preference/crypto/list/${cryptoListId}`, authorize(accessToken)).then((response) => {
+      return callback(response.data);
+    }).catch(() => {
+      return callback(undefined, 'Une erreur est survenue !')
     });
   }
 

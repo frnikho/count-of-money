@@ -1,10 +1,9 @@
 import { Button, Col, Row, Typography, Space, Breadcrumb } from "antd";
-import {useSecure} from "../hooks/useSecure";
 import './article.scss';
 const { Text } = Typography;
+const HTMLRegex = /(<([^>]+)>)/ig;
 
-export function Article(props: { title: string, body: string, src: string, date: string, author: string, link: string }) {
-  useSecure();
+export function Article(props: { title: string, body: string, src: string, date: Date, author: string, link: string }) {
   return (
     <div>
       <Row>
@@ -30,14 +29,14 @@ export function Article(props: { title: string, body: string, src: string, date:
         </Col>
         <Col id="pubDateAndAuthor">
           <Space direction="vertical" style={{gap: '1vh' }}>
-            <Text id="article" type="secondary">Date de publication: {props.date}</Text>
+            <Text id="article" type="secondary">Date de publication: {props.date.toLocaleString()}</Text>
             <Text type="secondary" style={{width: '100%'}}>Autheur: {props.author}</Text>
           </Space>
         </Col>
       </Row>
       <Row id="articleContent">
         <Col>
-          <Text>{props.body}</Text>
+          <Text>{props.body.replace(HTMLRegex, '')}</Text>
         </Col>
       </Row>
       <Row id="articleLink">

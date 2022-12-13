@@ -23,7 +23,16 @@ export class ConfigRepository {
     return config;
   }
 
-  public updateGlobalConfig(body: UpdateGlobalConfig) {
+  public async updateGlobalConfig(body: UpdateGlobalConfig) {
+    if (await this.prismaService.config.findFirst({where: {id: 'global'}}) === null) {
+      return this.prismaService.config.create({
+        data: {
+          id: 'global',
+          articlesToShow: body.articlesToShow ?? 5,
+          cryptoToShow: body.cryptoToShow ?? 5,
+        }
+      })
+    }
     return this.prismaService.config.update({
       where: {
         id: 'global'

@@ -52,7 +52,7 @@ export class PreferenceRepository {
     })
   }
 
-  public updateCryptoList(user: User, cryptoList: CryptoList, body: UpdateCryptoListBody) {
+  public async updateCryptoList(user: User, cryptoList: CryptoList, body: UpdateCryptoListBody) {
     return this.prismaService.cryptoList.update({
       where: {
         id: cryptoList.id
@@ -60,8 +60,11 @@ export class PreferenceRepository {
       data: {
         name: body.name,
         cryptos: {
-          connect: [...body?.cryptos?.map((c) => ({id: c})) ?? []]
+          set: [...body?.cryptos?.map((c) => ({id: c})) ?? []],
         },
+      },
+      select: {
+        cryptos: {}
       }
     })
   }

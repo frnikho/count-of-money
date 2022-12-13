@@ -1,11 +1,14 @@
-import { Route, Routes } from 'react-router-dom'
+import {Navigate, Route, Routes} from 'react-router-dom'
 import { Auth } from './components/auth'
-import { Home } from './pages/home/Home'
+import { Home } from './pages/Home'
 import { Profile } from './components/profile';
-import { Article } from './components/article';
 import {MainLayout} from "./layout/MainLayout";
-import { Admin } from './components/admin';
 import './app.module.scss';
+import {ArticlePage} from "./pages/ArticlePage";
+import React from "react";
+import {AdminPage} from "./pages/AdminPage";
+import {CryptoPage} from "./pages/CryptoPage";
+import {MyList} from "./pages/MyList";
 
 export function App() {
 
@@ -13,13 +16,21 @@ export function App() {
     <Routes>
       <Route path="/" element={<MainLayout/>}>
         <Route index element={<Home/>} />
-        <Route path={"admin"} element={<Admin/>}/>
-      </Route>
-      <Route path="/profile">
-        <Route index element={<Profile/>} />
-      </Route>
-      <Route path="/article">
-        <Route index element={<Article title='title' body='body' src='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg' date='date' author='author' link='https://www.google.com/' />} />
+        <Route path="profile">
+          <Route index element={<Profile/>} />
+        </Route>
+        <Route path={"admin"} element={<AdminPage/>}/>
+        <Route path="article">
+          <Route index element={<Navigate to={'/'}/>}/>
+          <Route path={":sourceId/:articleId"} element={<ArticlePage/>}/>
+        </Route>
+        <Route path={"list"}>
+          <Route index element={<MyList/>}/>
+        </Route>
+        <Route path={"crypto"}>
+          <Route index element={<Navigate to={'/'}/>}/>
+          <Route path={":id"} element={<CryptoPage/>}/>
+        </Route>
       </Route>
       <Route path={"/auth"} element={<Auth/>}/>
     </Routes>

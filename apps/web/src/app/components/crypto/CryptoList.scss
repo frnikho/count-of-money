@@ -1,0 +1,27 @@
+.crypto_list {
+  transition: 0.2s;
+  cursor: pointer;
+  margin-top: 1em;
+  padding-left: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: rgba(225,225,225,0.51);
+  border-radius: 18px;
+
+  border-color: rgba(225, 225, 225, 0);
+  border-width: 0.2em;
+  border-style: solid;
+
+}
+
+.crypto_list-active {
+  @extend .crypto_list;
+  border-width: 0.2em;
+  border-color: rgba(86, 86, 86, 0.11);
+}
+
+.crypto_list:hover {
+  opacity: 0.6;
+  transition: 0.2s;
+}

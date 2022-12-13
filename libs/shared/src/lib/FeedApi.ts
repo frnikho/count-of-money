@@ -66,9 +66,13 @@ export class Article {
   @ApiProperty()
   categories:  unknown[];
 
-  constructor(title: string, pubDate: Date, link: string, guid: string, author: unknown, thumbnail: string, description: string, content: string, enclosure: unknown, categories: unknown[]) {
+  @ApiProperty()
+  source: string;
+
+  constructor(title: string, pubDate: Date, link: string, guid: string, author: unknown, thumbnail: string, description: string, content: string, enclosure: unknown, categories: unknown[], source: string) {
     this.title = title;
     this.pubDate = pubDate;
+    this.source = source;
     this.link = link;
     this.guid = guid;
     this.author = author;

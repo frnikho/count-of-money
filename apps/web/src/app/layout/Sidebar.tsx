@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {HomeOutlined, UserOutlined} from "@ant-design/icons";
+import {HomeOutlined, UnorderedListOutlined, UserOutlined} from "@ant-design/icons";
 import {Menu} from "antd";
 import {useAuth} from "../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
@@ -12,11 +12,17 @@ const items = [
     link: '/'
   },
   {
+    label: 'Mes listes',
+    icon: UnorderedListOutlined,
+    admin: false,
+    link: '/list',
+  },
+  {
     label: 'Administration',
     icon: UserOutlined,
     admin: true,
     link: '/admin'
-  }
+  },
 ]
 
 export const SidebarMenu = () => {
@@ -26,7 +32,7 @@ export const SidebarMenu = () => {
 
   return (
     <div style={{padding: '0.5em'}}>
-      <img style={{padding: 4, marginTop: '0.8em'}} src={"../../assets/blank_logo.png"} alt={"Logo"}/>
+      <img style={{padding: 4, marginTop: '0.8em', width: '13em'}} src={"../../assets/blank_logo.png"} alt={"Logo"}/>
       <div style={{marginTop: '2em'}}/>
       <Menu
         style={{gap: 30}}

@@ -9,8 +9,8 @@ type Props = {
 
 export const ArticleList = (props: Props) => {
   return (
-    <div style={{padding: '0.6em'}}>
-      {props.articles.map((article, index) => <ArticleItem key={index} article={article}/>)}
+    <div>
+      {props.articles.map((article, index) => <ArticleItem key={'article_list' + index} article={article}/>)}
     </div>
   );
 };

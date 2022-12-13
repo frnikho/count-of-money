@@ -18,12 +18,14 @@ export const HeaderMenu = () => {
     toast('Vous avez été déconnecter avec succès !', {type: 'success'});
   }, [logout]);
 
+  const onClickProfile = useCallback(() => navigate('/profile'), [navigate]);
+
   const items = useMemo(() => {
     return [
-      { label: 'Mon profile', key: 'profile' }, // remember to pass the key prop
+      { label: 'Mon profile', key: 'profile', danger: false, onClick: onClickProfile}, // remember to pass the key prop
       { label: 'Se déconnecter', key: 'logout', danger: true, onClick: onClickLogout}, // which is required
     ]
-  }, [onClickLogout]);
+  }, [onClickLogout, onClickProfile]);
 
 
   const authMenu = useMemo(() => {
@@ -41,7 +43,7 @@ export const HeaderMenu = () => {
         </Popover>
       )
     }
-  }, [authState]);
+  }, [authState, items, navigate, user]);
 
   return (
     <Header style={{background: '#001529', padding: 0}}>
