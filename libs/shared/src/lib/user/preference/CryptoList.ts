@@ -3,15 +3,20 @@ import {ApiProperty} from "@nestjs/swagger";
 import {CryptoCurrency} from "../../crypto/CryptoCurrency";
 
 export class CryptoList {
+
+  @ApiProperty()
+  id: string;
+
   @ApiProperty()
   name: string;
 
   @ApiProperty()
   cryptos: CryptoCurrency[];
 
-  constructor(name: string, cryptos: CryptoCurrency[]) {
+  constructor(name: string, cryptos: CryptoCurrency[], id: string) {
     this.name = name;
     this.cryptos = cryptos;
+    this.id = id;
   }
 }
 

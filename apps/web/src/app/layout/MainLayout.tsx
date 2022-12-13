@@ -1,6 +1,5 @@
-// @flow
 import * as React from 'react';
-import {Avatar, Button, Layout, Menu, theme} from "antd";
+import {Layout} from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Outlet } from 'react-router-dom';
 import {useState} from "react";
@@ -10,11 +9,6 @@ import {SidebarMenu} from "./Sidebar";
 export const MainLayout = () => {
 
   const [collapsed, setCollapse] = useState<boolean>(false);
-
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
 
   return (
     <Layout>
@@ -30,7 +24,7 @@ export const MainLayout = () => {
         width={200}
         breakpoint="lg"
         collapsedWidth="0"
-        onCollapse={(collapsed, type) => {
+        onCollapse={(collapsed) => {
           setCollapse(collapsed);
         }}
       >
@@ -38,7 +32,7 @@ export const MainLayout = () => {
       </Sider>
       <Layout style={{marginLeft: collapsed ? 0 : 200 }}>
         <HeaderMenu/>
-        <div style={{padding: 8}}>
+        <div style={{padding: 8, marginLeft: '2.2em', marginTop: '2.2em'}}>
           <Outlet/>
         </div>
       </Layout>

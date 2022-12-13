@@ -40,6 +40,10 @@ export class CryptoRepository {
     });
   }
 
+  public getCryptoById(cryptoId: string) {
+    return this.prismaService.crypto.findFirst({where: {id: cryptoId}});
+  }
+
   public updateCryptoWithApiId(apidId: string, enable: boolean): Promise<Crypto> {
     return this.prismaService.crypto.update({
       where: {
@@ -65,6 +69,15 @@ export class CryptoRepository {
   public getAllCrypto() {
     return this.prismaService.crypto.findMany();
   }
+
+  public getRestrictedCrypto() {
+    return this.prismaService.crypto.findMany({
+      where: {
+        default: true,
+      }
+    });
+  }
+
 
   public getAllEnableCrypto() {
     return this.prismaService.crypto.findMany({
