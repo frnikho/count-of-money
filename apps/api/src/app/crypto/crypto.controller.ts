@@ -5,6 +5,7 @@ import {CryptoPipe} from "./crypto.pipe";
 import {Crypto} from '.prisma/client';
 import {CryptoCurrency, UpdateEnableCrypto} from "@count-of-money/shared";
 import {ResponseError} from "@count-of-money/documentation";
+import {Public} from "../auth/jwt/jwt.decorator";
 
 @Controller('crypto')
 @ApiTags('Cryptocurrency')
@@ -25,11 +26,16 @@ export class CryptoController {
     return this.cryptoService.getAllCrypto(req.user);
   }
 
+  @Public()
+  @Get('public')
+  public getRestrictedCrypto() {
+    return this.cryptoService.getRestrictedCrypto();
+  }
+
   @HttpCode(200)
   @Patch()
   public updateCrypto(@Request() req, @Body() body: UpdateEnableCrypto) {
     return this.cryptoService.updateCrypto(req.user, body);
-
   }
 
   @Get(':cryptoId')
@@ -40,8 +46,8 @@ export class CryptoController {
   @ApiServiceUnavailableResponse({description: 'Service unavailable', type: ResponseError})
   @ApiInternalServerErrorResponse({description: 'An internal error occurred, please try again later !', type: ResponseError})
   @ApiBearerAuth()
-  public getCryptoInfo() {
-    //TODO waiting for user preference
+  public getCryptoInfo(@Request() req, @Param('cryptoId') cryptoId: string) {
+    return this.cryptoService.getCryptoById(req.user, cryptoId);
   }
 
   @Post(':cryptoId/toggle')

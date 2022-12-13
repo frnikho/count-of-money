@@ -13,11 +13,6 @@ export class PreferenceController {
   constructor(private service: PreferenceService) {
   }
 
-  @Get()
-  public getMyPreference() {
-    //TODO
-  }
-
   @Get('crypto/list')
   public getCryptLists(@Request() req) {
     return this.service.getCryptoList(req.user);

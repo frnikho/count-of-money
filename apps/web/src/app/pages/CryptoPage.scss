@@ -1,0 +1,20 @@
+@mixin board {
+  border-radius: 18px;
+}
+
+.board {
+  @include board;
+}
+
+.sideboard {
+  @include board;
+}
+
+.crypto_title {
+  margin: 0;
+  font-weight: bold;
+}
+
+.crypto_data {
+  margin: 0;
+}

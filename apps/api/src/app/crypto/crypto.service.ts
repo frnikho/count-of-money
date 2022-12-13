@@ -20,6 +20,10 @@ export class CryptoService {
     return crypto;
   }
 
+  public getCryptoById(user: User, cryptoId: string) {
+    return this.cryptoRepository.getCryptoById(cryptoId);
+  }
+
   public toggleCrypto(@IsAdmin() user: User, crypto: Crypto, enable: boolean) {
     return this.cryptoRepository.toggleCrypto(user, crypto, enable);
   }
@@ -31,5 +35,9 @@ export class CryptoService {
     for (const c of body.enableCrypto) {
       await this.cryptoRepository.updateCryptoWithApiId(c, true);
     }
+  }
+
+  public getRestrictedCrypto() {
+    return this.cryptoRepository.getRestrictedCrypto();
   }
 }

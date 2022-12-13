@@ -45,9 +45,13 @@ export class CryptoCurrency {
   @ApiProperty()
   updatedAt: Date;
 
-  constructor(id: string, apiId: string, symbol: string, name: string, image: string, link: string, market_data: unknown, localization: unknown, enable: boolean, createdAt: Date, charts: Charts, updatedAt: Date) {
+  @ApiProperty()
+  binanceId: string;
+
+  constructor(id: string, apiId: string, symbol: string, name: string, image: string, link: string, market_data: unknown, localization: unknown, enable: boolean, createdAt: Date, charts: Charts, updatedAt: Date, binanceId: string) {
     this.id = id;
     this.apiId = apiId;
+    this.binanceId = binanceId;
     this.symbol = symbol;
     this.name = name;
     this.image = image;
