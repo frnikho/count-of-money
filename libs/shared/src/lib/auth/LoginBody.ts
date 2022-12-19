@@ -12,3 +12,15 @@ export class LoginBody {
     this.password = password;
   }
 }
+
+export class GoogleLoginBody {
+  access_token: string;
+  scope: string;
+  token_type: string;
+
+  constructor(access_token: string, scope: string, token_type: string) {
+    this.access_token = access_token;
+    this.scope = scope;
+    this.token_type = token_type;
+  }
+}

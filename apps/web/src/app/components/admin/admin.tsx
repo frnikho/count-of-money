@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Button, Col, InputNumber, Row, Table, Transfer} from 'antd';
-import type {TransferDirection} from 'antd/es/transfer';
 import {useSecure} from "../../hooks/useSecure";
 import './admin.scss';
 import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
@@ -16,12 +15,6 @@ import {useModals} from "../../hooks/useModals";
 import {toast} from "react-toastify";
 import {CryptoControllerApi} from "../../controllers/CryptoControllerApi";
 
-interface RecordType {
-  key: string;
-  title: string;
-  description: string;
-}
-
 type Form = {
   articleToShow: number;
   cryptoToShow: number;
@@ -32,12 +25,6 @@ type Modals = {
   deleteSource: boolean;
   updateSource: boolean;
 }
-
-const mockData: RecordType[] = Array.from({length: 20}).map((_, i) => ({
-  key: i.toString(),
-  title: `content${i + 1}`,
-  description: `description of content${i + 1}`,
-}));
 
 export function Admin() {
 
@@ -92,6 +79,8 @@ export function Admin() {
     setValue('cryptoToShow', config?.cryptoToShow);
     setValue('articleToShow', config?.articlesToShow);
   }, [config, setValue]);
+
+
 
   const columns = useMemo(() => {
     return (

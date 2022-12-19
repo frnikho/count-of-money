@@ -38,6 +38,9 @@ export class UserRepository {
     return this.prisma.user.create({
       data: {
         ...user,
+        preference: {
+          create: {}
+        },
         password: '',
         authType: AuthType.Google,
       }

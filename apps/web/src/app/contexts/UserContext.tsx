@@ -14,6 +14,7 @@ export type UserContextType = {
   user?: User;
   logout: () => void;
   login: (email: string, password: string, done?: (user: User, token: string) => void, errorCb?: (err: string) => void) => void;
+  loginWithGoogle: (token: string, user: User) => void;
   reloadUser: (user?: User) => void;
   saveAccessToken: (token: string) => void;
   getAccessToken: () => string;
@@ -23,6 +24,7 @@ export type UserContextType = {
 export const UserContext = React.createContext<UserContextType>({
   getAccessToken: () => '',
   login: () => null,
+  loginWithGoogle: () => null,
   user: undefined,
   logout: () => null,
   reloadUser: () => null,
@@ -61,8 +63,11 @@ export const UserContextProvider = ({children}: React.PropsWithChildren) => {
     });
   };
 
+
   const logout = useCallback(() => {
     removeCookie('at')
+    setAuthState(AuthState.NotLogged);
+    setUser(undefined);
   }, [removeCookie]);
 
   const reloadUser = useCallback((user?: User, token?: string) => {
@@ -85,9 +90,15 @@ export const UserContextProvider = ({children}: React.PropsWithChildren) => {
       }
     }, [accessToken, saveAccessToken]);
 
+
+  const loginWithGoogle = useCallback((accessToken: string, user: User) => {
+    saveAccessToken(accessToken)
+    reloadUser(user);
+  }, [saveAccessToken, reloadUser]);
+
   useEffect(() => {
     if (cookies.at !== undefined) {
-      UserApiController.getLoggedUser(cookies.at, (user, error) => {
+      UserApiController.getLoggedUser(cookies.at, (user) => {
         if (user) {
           reloadUser(user);
           setAccessToken(cookies.at);
@@ -99,7 +110,7 @@ export const UserContextProvider = ({children}: React.PropsWithChildren) => {
   }, [cookies.at, reloadUser, setAuthState, setAccessToken]);
 
   return (
-    <UserContext.Provider value={{logout, reloadUser, saveAccessToken, getAccessToken: () => getAccessToken, login, user, authState,}}>
+    <UserContext.Provider value={{logout, loginWithGoogle, reloadUser, saveAccessToken, getAccessToken: () => getAccessToken, login, user, authState,}}>
       {children}
     </UserContext.Provider>
   );

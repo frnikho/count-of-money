@@ -36,7 +36,7 @@ export const UpdateListModal = (props: Props) => {
   }, [getAccessToken]);
 
   useEffect(() => {
-    setValue('crypto', props.list.cryptos.map((a) => a.id));
+    setValue('crypto', props.list.cryptos.filter((c) => c.enable).map((a) => a.id));
     setValue('name', props.list.name);
     loadAvailableCrypto();
   }, [props, props.list, setValue, loadAvailableCrypto])
@@ -66,7 +66,7 @@ export const UpdateListModal = (props: Props) => {
           placeholder="Please select"
           onChange={onChangeSelectedCrypto}
           value={watch('crypto')}
-          options={crypto?.map((c) => ({label: c.name, value: c.id}))}
+          options={crypto?.filter((c) => c.enable).map((c) => ({label: c.name, value: c.id}))}
         />
       </Form>
     </Modal>

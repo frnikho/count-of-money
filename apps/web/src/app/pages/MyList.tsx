@@ -12,6 +12,7 @@ import {useModals} from "../hooks/useModals";
 import {UpdateListModal} from "../modals/list/UpdateListModal";
 import {DeleteListModal} from "../modals/list/DeleteListModal";
 import {CreateListModal} from "../modals/list/CreateListModal";
+import {useSecure} from "../hooks/useSecure";
 
 type Modals = {
   openUpdate: boolean,
@@ -21,6 +22,7 @@ type Modals = {
 
 export const MyList = () => {
 
+  useSecure();
   const {authState, getAccessToken} = useAuth();
   const [list, setList] = useState<CryptoList[]>([]);
   const [selectedList, setSelectedList] = useState<CryptoList | undefined>(undefined);
@@ -93,7 +95,7 @@ export const MyList = () => {
               <Button size={'small'} type={'ghost'} onClick={() => onClickEdit(l)} icon={<EditTwoTone />}/>
               <Button size={'small'} type={'ghost'} onClick={() => onClickDelete(l)} icon={<DeleteTwoTone />}/>
             </div>
-            {l.cryptos.map((c, index) => <Avatar key={'list_crypto_avatar' + index} style={{marginLeft: 10}} size={64} src={c.image} alt={c.name}/>)}
+            {l.cryptos.filter((c) => c.enable).map((c, index) => <Avatar key={'list_crypto_avatar' + index} style={{marginLeft: 10}} size={64} src={c.image} alt={c.name}/>)}
           </div>
         )
       })}

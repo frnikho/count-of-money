@@ -1,5 +1,5 @@
 import api, {authorize} from "../utils/api";
-import {CreateCryptoListBody, CryptoList, UpdateCryptoListBody, User} from "@count-of-money/shared";
+import {CreateCryptoListBody, CryptoList, UpdateCryptoListBody, UpdateUserBody, User} from "@count-of-money/shared";
 
 export type UserCallback = (user?: User, error?: string) => void;
 export type CryptoListsCallback = (cryptoList?: CryptoList[], error?: string) => void;
@@ -41,6 +41,14 @@ export class UserApiController {
 
   public static deleteCryptoList(accessToken: string, cryptoListId: string, callback: CryptoListCallback) {
     api.delete<CryptoList>(`user/preference/crypto/list/${cryptoListId}`, authorize(accessToken)).then((response) => {
+      return callback(response.data);
+    }).catch(() => {
+      return callback(undefined, 'Une erreur est survenue !')
+    });
+  }
+
+  public static updateUser(accessToken: string, body: UpdateUserBody, callback: UserCallback) {
+    api.patch('user', body, authorize(accessToken)).then((response) => {
       return callback(response.data);
     }).catch(() => {
       return callback(undefined, 'Une erreur est survenue !')
