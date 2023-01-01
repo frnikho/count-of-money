@@ -20,6 +20,7 @@ export const MainLayout = () => {
           left: 0,
           top: 0,
           bottom: 0,
+          backgroundColor: 'whitesmoke'
         }}
         width={200}
         breakpoint="lg"
@@ -32,7 +33,7 @@ export const MainLayout = () => {
       </Sider>
       <Layout style={{marginLeft: collapsed ? 0 : 200 }}>
         <HeaderMenu/>
-        <div style={{padding: 8, marginLeft: '2.2em', marginTop: '2.2em'}}>
+        <div style={{padding: 8, marginLeft: '2.2em', marginTop: '1.2em', paddingBottom: '2.2em'}}>
           <Outlet/>
         </div>
       </Layout>

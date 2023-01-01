@@ -159,7 +159,9 @@ export const CryptoPage = () => {
             [{name: 'Price (USD)', data: prices}]
           }
           type="line"
-          width={'100%'}/> :
+          width={'100%'}
+          height={'200%'}
+            /> :
             <div style={{width: 500, textAlign: 'center', margin: 'auto', marginTop: 100}}>
               <Lottie animationData={loading} loop={true} />
             </div>}

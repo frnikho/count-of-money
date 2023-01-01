@@ -43,7 +43,7 @@ export type AuthForm = {
 export function Auth() {
 
   const navigate = useNavigate();
-  const {login, authState} = useAuth();
+  const {login, authState, loginWithGoogle} = useAuth();
   const {setValue, getValues, watch} = useForm<AuthForm>({defaultValues: {lastname: '', firstname: '', password: '', email: ''}});
 
   useEffect(() => {
@@ -71,15 +71,18 @@ export function Auth() {
   }
 
   const onClickLoginGoogle = useGoogleLogin({
-    scope: 'email profile openid',
-    redirect_uri: process.env["NX_GOOGLE_CALLBACK"],
-    onError: (errorResponse) => null,
-    onSuccess: (codeResponse) => {
-      AuthApiController.redirectGoogleLogin({code: codeResponse.code, scope: codeResponse.scope, prompt: "consent", authuser: 0}, () => {
-        //TODO
+    onError: () => {
+      toast('Une erreur est survenue !', {type: "error"});
+    },
+    onSuccess: (tokenResponse) => {
+      AuthApiController.loginWithGoogle({access_token: tokenResponse.access_token, token_type: tokenResponse.token_type, scope: tokenResponse.scope}, (response) => {
+        if (response) {
+          loginWithGoogle(response?.accessToken, response?.user);
+        } else {
+          toast('Une erreur est survenue !', {type: "error"});
+        }
       });
     },
-    flow: 'auth-code'
   });
 
     return (
@@ -132,6 +135,11 @@ export function Auth() {
                                         Connexion avec Google
                                     </Button>
                                 </Form.Item>
+                              <Form.Item wrapperCol={{span: 24}}>
+                                <Button type="primary" size={'large'} block onClick={() => navigate('/')}>
+                                  Continuer en tant qu'invité
+                                </Button>
+                              </Form.Item>
                             </Form>
                         </Tabs.TabPane>
                         <Tabs.TabPane  tab="Inscription" key="2">
@@ -200,7 +208,7 @@ export function Auth() {
                                 </Form.Item>
                                 <Divider />
                                 <Form.Item wrapperCol={{span: 24}}>
-                                    <Button type="primary" icon={<GoogleOutlined />} block>
+                                    <Button type="primary" icon={<GoogleOutlined />} block onClick={() => onClickLoginGoogle()}>
                                         Inscription avec Google
                                     </Button>
                                 </Form.Item>

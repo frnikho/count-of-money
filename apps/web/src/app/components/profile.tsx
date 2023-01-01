@@ -1,9 +1,11 @@
-import { Avatar, Button, Col, Form, Input, Modal, Row } from "antd";
-import {useEffect, useState} from "react";
+import { Avatar, Button, Col, Form, Input, Row } from "antd";
+import {useCallback, useEffect} from "react";
 import { useSecure } from "../hooks/useSecure";
 import './profile.scss';
 import {useAuth} from "../hooks/useAuth";
 import {useForm} from "react-hook-form";
+import {UserApiController} from "../controllers/UserApiController";
+import {toast} from "react-toastify";
 
 const tabSpan = {
   lg: 6,
@@ -40,10 +42,20 @@ type Form  = {
 }
 
 export function Profile() {
+
   useSecure();
-  const {user} = useAuth();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const {watch, setValue} = useForm<Form>({defaultValues: {firstname: '', lastname: ''}})
+  const {user, getAccessToken} = useAuth();
+  const {watch, setValue, getValues} = useForm<Form>({defaultValues: {firstname: '', lastname: ''}})
+
+  const onClickUpdate = useCallback(() => {
+    UserApiController.updateUser(getAccessToken(), {firstname: getValues('firstname'), lastname: getValues('lastname')}, (user, error) => {
+      if (error) {
+        toast('Une erreur est survenue !', {type: 'error'});
+      } else {
+        toast('Information mise(s) à jour(s) !', {type: 'success'});
+      }
+    })
+  }, [getValues, getAccessToken]);
 
   useEffect(() => {
     if (user) {
@@ -51,18 +63,6 @@ export function Profile() {
       setValue('lastname', user.lastname);
     }
   }, [user, setValue])
-
-  function showModal() {
-    setIsModalVisible(true);
-  }
-
-  function handleOk() {
-    setIsModalVisible(false);
-  }
-
-  function handleCancel() {
-    setIsModalVisible(false);
-  }
 
   return (
     <div>
@@ -80,10 +80,10 @@ export function Profile() {
         <Col {...fieldsSpan}>
           <Form>
             <Form.Item style={{ marginBottom: '10px' }}>
-              <Input placeholder="Prénom" value={watch('firstname')} />
+              <Input placeholder="Prénom" value={watch('firstname')} onChange={(e) => {setValue('firstname', e.currentTarget.value)}}/>
             </Form.Item>
             <Form.Item style={{ marginBottom: '10px' }}>
-              <Input placeholder="Nom" value={watch('lastname')}/>
+              <Input placeholder="Nom" value={watch('lastname')} onChange={(e) => {setValue('lastname', e.currentTarget.value)}}/>
             </Form.Item>
             <Form.Item style={{ marginBottom: '10px' }}>
               <Input placeholder="Email" disabled value={user?.email}/>
@@ -94,33 +94,10 @@ export function Profile() {
       <Row justify="center" align="middle">
         <Col {...buttonSpaceSpan} style={{ justifyContent: "center", alignItems: "center", display: "flex" }}>
           <Col {...buttonColSpan} style={{ paddingTop: "2vh" }}>
-            <Button type="primary" style={{ minWidth: '100%' }}>Mettre à jour</Button>
-          </Col>
-        </Col>
-        <Col {...buttonSpaceSpan} style={{ justifyContent: "center", alignItems: "center", display: "flex" }}>
-          <Col {...buttonColSpan} style={{ paddingTop: "2vh" }}>
-            <Button type="primary" style={{ width: '100%' }} onClick={showModal}>Changer mon mot de passe</Button>
-          </Col>
-        </Col>
-        <Col {...buttonSpaceSpan} style={{ justifyContent: "center", alignItems: "center", display: "flex" }}>
-          <Col {...buttonColSpan} style={{ paddingTop: "2vh" }}>
-            <Button type="primary" style={{ width: '100%' }} danger>Supprimer mon compte</Button>
+            <Button type="primary" style={{ minWidth: '100%' }} onClick={onClickUpdate}>Mettre à jour</Button>
           </Col>
         </Col>
       </Row>
-      <Modal title="Changer mon mot de passe" open={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <Form>
-          <Form.Item style={{ marginBottom: '10px' }}>
-            <Input placeholder="Ancien mot de passe" />
-          </Form.Item>
-          <Form.Item style={{ marginBottom: '10px' }}>
-            <Input placeholder="Nouveau mot de passe" />
-          </Form.Item>
-          <Form.Item style={{ marginBottom: '10px' }}>
-            <Input placeholder="Confirmer le nouveau mot de passe" />
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 }

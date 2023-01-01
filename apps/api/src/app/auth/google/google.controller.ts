@@ -1,10 +1,11 @@
-import {Controller, Get, Post, Request, UseGuards, UseInterceptors} from "@nestjs/common";
+import {Body, Controller, Get, Post, Request, UseGuards, UseInterceptors} from "@nestjs/common";
 import {GoogleService} from "./google.service";
 import {GoogleGuard} from "./google.guard";
 import {Public} from "../jwt/jwt.decorator";
 import { LoginInterceptor } from "../auth.interceptor";
 import {ApiOperation, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {QueryParamsGoogleLoginRedirect} from "@count-of-money/documentation";
+import {GoogleLoginBody} from "@count-of-money/shared";
 
 @Controller('auth/google')
 @ApiTags('Authentification')
@@ -31,6 +32,12 @@ export class GoogleController {
   @ApiOperation({description: 'WARNING ! \nYou should call /auth/google before using this route and redirect all uri query response parameters here'})
   public redirect(@Request() req) {
     return this.googleService.login(req);
+  }
+
+  @Public()
+  @Post('login')
+  public loginWithToken(@Body() body: GoogleLoginBody) {
+    return this.googleService.loginWithToken(body);
   }
 
 }

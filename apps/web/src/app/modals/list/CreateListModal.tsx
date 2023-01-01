@@ -68,7 +68,7 @@ export const CreateListModal = (props: Props) => {
             style={{ width: '100%' }}
             placeholder="Please select"
             onChange={onChangeSelectedCrypto}
-            options={crypto?.map((c) => ({label: c.name, value: c.id}))}
+            options={crypto?.filter((c) => c.enable).map((c) => ({label: c.name, value: c.id}))}
           />
         </Form.Item>
       </Form>

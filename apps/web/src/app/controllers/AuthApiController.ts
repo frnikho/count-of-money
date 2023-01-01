@@ -1,5 +1,5 @@
 import api from "../utils/api";
-import {LoginBody, LoginResponse, RegisterBody, User} from "@count-of-money/shared";
+import {GoogleLoginBody, LoginBody, LoginResponse, RegisterBody, User} from "@count-of-money/shared";
 
 export type GoogleRedirectParams = {
   code: string;
@@ -15,6 +15,14 @@ export class AuthApiController {
 
   public static redirectGoogleLogin = (params: GoogleRedirectParams, callback: AuthCallback): void => {
     api.get(`/auth/google/redirect?code=${params.code}&authuser=${params.authuser}&scope=${params.scope}&prompt=${params.prompt}`, ).then((response) => {
+      callback(response.data);
+    }).catch(() => {
+      callback(undefined, 'Une erreur est survenue !');
+    });
+  }
+
+  public static loginWithGoogle = (params: GoogleLoginBody, callback: AuthCallback) => {
+    api.post(`/auth/google/login`, params).then((response) => {
       callback(response.data);
     }).catch(() => {
       callback(undefined, 'Une erreur est survenue !');

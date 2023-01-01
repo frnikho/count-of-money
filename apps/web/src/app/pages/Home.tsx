@@ -25,22 +25,29 @@ export function Home() {
   const [articles, setArticles] = useState<Article[]>([]);
   const {createList, updateModals} = useModals<Modals>({createList: false});
 
+  const loadPublicCryptoList = useCallback(() => {
+    CryptoControllerApi.getPublic((crypto) => {
+      if (crypto) {
+        setCryptoList([{cryptos: crypto, name: 'Invité', id: '1'}]);
+      } else {
+        toast('Une erreur est survenue', {type: 'error'});
+      }
+    })
+  }, []);
+
   const loadCryptoList = useCallback(() => {
     if (authState === AuthState.Logged) {
       UserApiController.getCryptoList(getAccessToken(), (cryptoList) => {
-        if (cryptoList)
+        if (cryptoList && cryptoList.length <= 0) {
+          loadPublicCryptoList();
+        } else if (cryptoList) {
           setCryptoList(cryptoList);
+        }
       });
     } else {
-      CryptoControllerApi.getPublic((crypto) => {
-        if (crypto) {
-          setCryptoList([{cryptos: crypto, name: 'Invité', id: '1'}]);
-        } else {
-          toast('Une erreur est survenue', {type: 'error'});
-        }
-      })
+      loadPublicCryptoList();
     }
-  }, [authState, getAccessToken]);
+  }, [authState, getAccessToken, loadPublicCryptoList]);
 
   const  loadArticles = useCallback(() => {
     if (authState === AuthState.Logged) {
@@ -64,7 +71,8 @@ export function Home() {
   const onListCreated = useCallback(() => {
     toast('Nouvelle liste créer avec succès !', {type: 'success'});
     updateModals('createList', false);
-  }, [updateModals]);
+    loadCryptoList();
+  }, [updateModals, loadCryptoList]);
 
   const onModalClose = useCallback(() => updateModals('createList', false), [updateModals]);
 
@@ -76,7 +84,7 @@ export function Home() {
     <>
       <CreateListModal open={createList} onOk={onListCreated} onClose={onModalClose}/>
       {cryptoList.map((c, index) => <CryptoListComponent key={index} list={c}/>)}
-      <Button type={'primary'} style={{marginTop: '1em'}} onClick={onClickCreateNewList}>Créer une nouvelle liste</Button>
+      <Button title={authState !== AuthState.Logged ? "Vous devez être connecter pour créer une nouvelle liste" : 'Créer une nouvelle liste'} disabled={authState !== AuthState.Logged} type={'primary'} style={{marginTop: '1em'}} onClick={onClickCreateNewList}>Créer une nouvelle liste</Button>
       <h1 className={"title"} style={{marginTop: 50}}>Articles</h1>
       <ArticleList articles={articles}/>
     </>

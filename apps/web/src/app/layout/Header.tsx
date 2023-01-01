@@ -46,8 +46,8 @@ export const HeaderMenu = () => {
   }, [authState, items, navigate, user]);
 
   return (
-    <Header style={{background: '#001529', padding: 0}}>
-      <div style={{width: '100%', height: '100%', paddingLeft:'0.8em', paddingRight: '0.8em', display: 'flex', flexDirection: 'row', alignContent: 'space-around', alignItems: 'center', justifyItems: 'center', justifyContent: 'space-between'}}>
+    <Header style={{ position: 'sticky', top: 0, zIndex: 1, width: '100%', background: '#001529', padding: 0}}>
+      <div style={{backgroundColor: 'whitesmoke', width: '100%', height: '100%', paddingLeft:'0.8em', paddingRight: '0.8em', display: 'flex', flexDirection: 'row', alignContent: 'space-around', alignItems: 'center', justifyItems: 'center', justifyContent: 'space-between'}}>
         <div>
 
         </div>

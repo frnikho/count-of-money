@@ -150,7 +150,7 @@ export const CryptoListComponent = (props: Props) => {
     <Row>
       <Col xs={24} sm={24} md={20} lg={8} xl={selectedCrypto === undefined ? 24 : 12}>
         <h3 className={"title"}>Ma liste de surveillance: {props.list?.name}</h3>
-        {props.list?.cryptos.map((crypto, index) => {
+        {props.list?.cryptos.filter((c) => c.enable).map((crypto, index) => {
           return (
             <Row className={crypto.id === selectedCrypto?.id ? 'crypto_list-active' : "crypto_list"} onClick={() => onClickCrypto(crypto)} key={'crypto_list_item' + index}>
               <Col xxl={3} xl={4} lg={6} sm={4} xs={4}>
